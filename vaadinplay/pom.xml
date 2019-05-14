@@ -16,6 +16,8 @@
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 
 		<vaadin.version>13.0.6</vaadin.version>
+		<cayenne.version>4.0.1</cayenne.version> 
+		
 	</properties>
 
 	<repositories>
@@ -77,23 +79,28 @@
 			<artifactId>vaadin-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.cayenne</groupId>
-			<artifactId>cayenne-server</artifactId>
-			<version>4.0.M5</version>
-		</dependency>
+            <groupId>org.apache.cayenne</groupId>
+            <artifactId>cayenne-server</artifactId>
+            <version>${cayenne.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.44</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.apache.cayenne</groupId>
+            <artifactId>cayenne-java8</artifactId>
+            <version>${cayenne.version}</version>
+        </dependency>
 
 		<!-- Added to provide logging output as Flow uses -->
 		<!-- the unbound SLF4J no-operation (NOP) logger implementation -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-		</dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            </dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
