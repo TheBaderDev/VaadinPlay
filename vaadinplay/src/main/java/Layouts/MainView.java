@@ -46,6 +46,7 @@ public class MainView extends VerticalLayout {
 		discription.addClassName("discription");
 		box.add(title);
 		box.add(discription);
+		box.add(new dbButton());
 		box.addClassName("all");
 		add(box);
     }
