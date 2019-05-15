@@ -16,7 +16,7 @@
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 
 		<vaadin.version>13.0.6</vaadin.version>
-		<cayenne.version>4.0.1</cayenne.version> 
+        <cayenne.version>4.1.B1</cayenne.version>
 		
 	</properties>
 
@@ -83,15 +83,14 @@
             <artifactId>cayenne-server</artifactId>
             <version>${cayenne.version}</version>
         </dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.44</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.cayenne</groupId>
-            <artifactId>cayenne-java8</artifactId>
+            <artifactId>cayenne-server</artifactId>
             <version>${cayenne.version}</version>
         </dependency>
 
