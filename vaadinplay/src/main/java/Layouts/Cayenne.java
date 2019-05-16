@@ -9,17 +9,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import cayennemodel.Users;
 
 public class Cayenne {
-
-    //	public static void main(String[] args) {
-    //		//CayenneTesting app = new CayenneTesting();
-    //
-    ////		app.updateCount("Pablo Picasso");
-    ////        app.updateArtist();
-    ////        app.insertPaintings();
-    ////        app.selectPaintings();
-    //	}
-
-    public static ServerRuntime _runtime = null;
+    private static ServerRuntime _runtime = null;
 
     public static synchronized ServerRuntime getRuntime() {
         if (_runtime == null) {
@@ -37,9 +27,7 @@ public class Cayenne {
     }
 
     public static synchronized void setRuntime(ServerRuntime serverRuntime) {
-        if (_runtime == null) {
-            _runtime = serverRuntime;
-        }
+        _runtime = serverRuntime;
     }
 
     public static DataContext createContext() {

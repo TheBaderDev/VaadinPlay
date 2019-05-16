@@ -17,6 +17,7 @@ public class dbButton extends Div {
         // Handle the events with an anonymous class
         button.addClickListener(e -> {
             incrementValue();
+            button.setText(getButtonString());
             label.setText(getButtonString());
         });
 
