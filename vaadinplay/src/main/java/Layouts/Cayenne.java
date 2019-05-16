@@ -29,9 +29,7 @@ public class Cayenne {
     }
 
     public static synchronized void setRuntime(ServerRuntime serverRuntime) {
-        if (_runtime == null) {
-            _runtime = serverRuntime;
-        }
+        _runtime = serverRuntime;
     }
 
     public static DataContext createContext() {

@@ -22,14 +22,13 @@ public class dbButton extends Div {
         // Handle the events with an anonymous class
         button.addClickListener(e -> {
             incrementValue();
-            //label.setText(getButtonString());
             button.setText(getButtonString(testName));
-        });
+        });   
+
 
         button.addClassName("dbButton");
-        //label.addClassName("label");
         add(button);
-        //add(label);
+
     }
 
     public void incrementValue() {
