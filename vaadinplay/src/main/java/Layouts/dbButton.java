@@ -7,32 +7,36 @@ import com.vaadin.flow.component.html.Label;
 
 @HtmlImport("DBButtonStyle.html")
 public class dbButton extends Div {
+	//Instance of the Cayenne var
+	private Cayenne application = new Cayenne();
+	//Cake name being tested
+	private String testName = "chocolate";
+
 
     public dbButton() {
 
         // Have a component that fires click events
-        Button button = new Button("Increment Value!");
-        Label label = new Label(getButtonString());
+        Button button = new Button(getButtonString(testName));
+        //Label label = new Label(getButtonString());
 
         // Handle the events with an anonymous class
         button.addClickListener(e -> {
             incrementValue();
-            label.setText(getButtonString());
+            //label.setText(getButtonString());
+            button.setText(getButtonString(testName));
         });
 
         button.addClassName("dbButton");
-        label.addClassName("label");
+        //label.addClassName("label");
         add(button);
-        add(label);
+        //add(label);
     }
 
     public void incrementValue() {
-        Cayenne application = new Cayenne();
-        application.updateCount("Pablo Picasso");
+        application.updateCakeCount("chocolate");
     }
 
-    public String getButtonString() {
-        Cayenne application = new Cayenne();
-        return "Number of Times Clicked: " + Integer.toString(application.getNumber("Pablo Picasso"));
+    public String getButtonString(String name) {
+        return "Press to eat the " + name + " cake! Times Eaten: " + Integer.toString(application.getCakeNumber(name));
     }
 }
