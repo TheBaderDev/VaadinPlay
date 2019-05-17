@@ -16,13 +16,13 @@ public class dbButton extends Div {
     public dbButton() {
 
         // Have a component that fires click events
-        Button button = new Button(getButtonString(testName));
+        Button button = new Button(getButtonString(testName, application.getCakeNumber(testName)));
         //Label label = new Label(getButtonString());
 
         // Handle the events with an anonymous class
         button.addClickListener(e -> {
-            incrementValue();
-            button.setText(getButtonString(testName));
+//            incrementValue();
+            button.setText(getButtonString(testName, incrementValue(testName)));
         });   
 
 
@@ -31,11 +31,11 @@ public class dbButton extends Div {
 
     }
 
-    public void incrementValue() {
-        application.updateCakeCount("chocolate");
+    public int incrementValue(String name) {
+        return application.updateCakeCount(name);
     }
 
-    public String getButtonString(String name) {
-        return "Press to eat the " + name + " cake! Times Eaten: " + Integer.toString(application.getCakeNumber(name));
+    public String getButtonString(String name, int number) {
+        return "Press to eat the " + name + " cake! Times Eaten: " + number;
     }
 }

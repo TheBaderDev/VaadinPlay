@@ -48,7 +48,7 @@ public class Cayenne {
         context.commitChanges();
     }
 
-    public void updateCakeCount(String name) {
+    public int updateCakeCount(String name) {
         ObjectContext context = Cayenne.createContext();
 
         Cake tempCake = ObjectSelect.query(Cake.class, Cake.NAME.eq(name)).selectOne(context);
@@ -56,8 +56,10 @@ public class Cayenne {
             makeNewCake(name);
             tempCake = ObjectSelect.query(Cake.class, Cake.NAME.eq(name)).selectOne(context);
         }
-        tempCake.setTimesEaten(tempCake.getTimesEaten() + 1);
+        int n = tempCake.getTimesEaten() + 1;
+        tempCake.setTimesEaten(n);
         context.commitChanges();
+        return n;
     }
 
     public int getCakeNumber(String name) {
