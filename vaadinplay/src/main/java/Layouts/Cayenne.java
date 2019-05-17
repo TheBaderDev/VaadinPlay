@@ -20,7 +20,8 @@ public class Cayenne {
 
             _runtime = ServerRuntime.builder().addConfig("cayenne-project.xml")
                             //.dataSource(DataSourceBuilder.url("jdbc:mysql://localhost/vaadinplay?useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8")
-                    		.dataSource(DataSourceBuilder.url("jdbc:mysql://104.197.99.240/testDB")
+                    		//104.197.99.240
+            				.dataSource(DataSourceBuilder.url("jdbc:mysql://35.243.157.34/testDB")
                                             .driver(com.mysql.cj.jdbc.Driver.class.getName()).userName("root").password(mysqlPassword)
                                             .pool(1, 3).build())
                             .build();
