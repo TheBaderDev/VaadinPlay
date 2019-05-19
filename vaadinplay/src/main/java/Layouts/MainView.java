@@ -1,18 +1,25 @@
 package Layouts;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.ErrorParameter;
+import com.vaadin.flow.router.HasErrorParameter;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.Route;
 
 /**
  * The main view contains a button and a click listener.
  */
-@Route("home")
+@Route("")
 @HtmlImport("MainBoxLayoutStyle.html")
-public class MainView extends VerticalLayout {
+public class MainView extends VerticalLayout implements HasErrorParameter<NotFoundException> {
 
     public MainView() {
         //setClassName("all");
@@ -34,5 +41,15 @@ public class MainView extends VerticalLayout {
         box.add(new dbButton());
         box.addClassName("all");
         add(box);
+        
+        getUI().ifPresent(ui -> {
+            ui.getPage().executeJavaScript("window.location.href = 'www.google.com'");
+        });
     }
+
+	@Override
+	public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
+		UI.getCurrent().navigate("");
+		return HttpServletResponse.SC_NOT_FOUND;
+	}
 }
