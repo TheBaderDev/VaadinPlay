@@ -8,7 +8,7 @@ import com.vaadin.flow.component.html.Label;
 @HtmlImport("DBButtonStyle.html")
 public class dbButton extends Div {
 	//Instance of the Cayenne var
-	private Cayenne application = new Cayenne();
+	private Manager application = new Manager();
 	//Cake name being tested
 	private String testName = "chocolate";
 

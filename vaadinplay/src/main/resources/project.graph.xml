@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <graphs xmlns="http://cayenne.apache.org/schema/10/graph">
-	<graph type="ER" scale="1.0"/>
+	<graph type="ER" scale="1.0">
+		<entity name="PARTY" x="28.0" y="27.0" width="103.0" height="98.0"/>
+		<entity name="SONG" x="23.0" y="27.0" width="103.0" height="114.0"/>
+		<entity name="cake" x="18.0" y="27.0" width="71.0" height="66.0"/>
+		<entity name="JOIN_PARTY_SONG" x="28.0" y="24.0" width="129.0" height="66.0"/>
+		<entity name="USER" x="23.0" y="24.0" width="105.0" height="178.0"/>
+	</graph>
 </graphs>
