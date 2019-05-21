@@ -1,11 +1,16 @@
 package database;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.datasource.DataSourceBuilder;
 
-import cayenne.Party;
+import beatseshDB.Party;
+import beatseshDB.Song;
+
 
 public class Manager {
 
@@ -20,7 +25,7 @@ public class Manager {
             _runtime = ServerRuntime.builder().addConfig("cayenne-project.xml")
                             //.dataSource(DataSourceBuilder.url("jdbc:mysql://localhost/vaadinplay?useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8")
                             //104.197.99.240
-                            .dataSource(DataSourceBuilder.url("jdbc:mysql://35.243.157.34/testDB")
+                            .dataSource(DataSourceBuilder.url("jdbc:mysql://localhost/beatseshDB?useLegacyDatetimeCode=false&serverTimezone=UTC&characterEncoding=UTF-8")
                                             .driver(com.mysql.cj.jdbc.Driver.class.getName()).userName("root").password(mysqlPassword)
                                             .pool(1, 3).build())
                             .build();
@@ -39,37 +44,28 @@ public class Manager {
     public Manager() {
     }
 
-    public Party makeNewParty(String name) {
+    public Party makeNewParty(String partyName) {
         ObjectContext context = Manager.createContext();
+        
         Party rv = context.newObject(Party.class);
-
-        rv.setName(name);
+        rv.setPartyName(partyName);
+        rv.setPartyCode(getPartyCode());
+        
+        
         context.commitChanges();
         return rv;
     }
+    
+    private int getPartyCode() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-    //    public int updateCakeCount(String name) {
-    //        ObjectContext context = Cayenne.createContext();
-    //
-    //        Cake tempCake = ObjectSelect.query(Cake.class, Cake.NAME.eq(name)).selectOne(context);
-    //        if (tempCake == null) {
-    //            makeNewCake(name);
-    //            tempCake = ObjectSelect.query(Cake.class, Cake.NAME.eq(name)).selectOne(context);
-    //        }
-    //        int n = tempCake.getTimesEaten() + 1;
-    //        tempCake.setTimesEaten(n);
-    //        context.commitChanges();
-    //        return n;
-    //    }
-    //
-    //    public int getCakeNumber(String name) {
-    //        ObjectContext context = Cayenne.createContext();
-    //        Cake tempCake = ObjectSelect.query(Cake.class, Cake.NAME.eq(name)).selectOne(context);
-    //
-    //        if (tempCake == null) {
-    //            makeNewCake(name);
-    //            return 0;
-    //        }
-    //        return tempCake.getTimesEaten();
-    //    }
+	public Song makeNewSong(Party party) {
+    	ObjectContext context = Manager.createContext();
+        Song rv = context.newObject(Song.class);
+        
+        context.commitChanges();
+		return rv;
+    }
 }

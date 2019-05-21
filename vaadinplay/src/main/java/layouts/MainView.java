@@ -1,4 +1,4 @@
-package Layouts;
+package layouts;
 
 import javax.servlet.http.HttpServletResponse;
 

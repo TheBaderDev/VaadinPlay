@@ -1,4 +1,4 @@
-package Layouts;
+package layouts;
 
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
