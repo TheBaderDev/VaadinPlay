@@ -1,6 +1,6 @@
-package cayenne;
+package beatseshDB;
 
-import cayenne.auto._User;
+import beatseshDB.auto._User;
 
 public class User extends _User {
 

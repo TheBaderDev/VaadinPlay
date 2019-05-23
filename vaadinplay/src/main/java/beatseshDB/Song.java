@@ -1,6 +1,6 @@
-package cayenne;
+package beatseshDB;
 
-import cayenne.auto._Song;
+import beatseshDB.auto._Song;
 
 public class Song extends _Song {
 
