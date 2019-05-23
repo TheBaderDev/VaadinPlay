@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
 	 project-version="10">
 	<property name="defaultPackage" value="beatseshDB"/>
-	<db-entity name="AUTO_PK_SUPPORT" catalog="beatseshDB">
-		<db-attribute name="NEXT_ID" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="TABLE_NAME" type="CHAR" isMandatory="true" length="100"/>
-	</db-entity>
 	<db-entity name="JOIN_PARTY_SONG" catalog="beatseshDB">
 		<db-attribute name="CHILD_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
@@ -17,49 +13,53 @@
 		<db-attribute name="PARENT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="PARTY" catalog="beatseshDB">
+		<db-attribute name="CREATED" type="TIMESTAMP"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="LAST_MODIFIED" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="MP3" type="LONGVARBINARY" length="16777215"/>
+		<db-attribute name="LAST_MODIFIED" type="TIMESTAMP"/>
 		<db-attribute name="PARTY_CODE" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="PARTY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
 	<db-entity name="SONG" catalog="beatseshDB">
+		<db-attribute name="ARTIST_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="CREATED" type="TIMESTAMP"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="LINK" type="VARCHAR" isMandatory="true" length="64"/>
-		<db-attribute name="SONG_ARTIST" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="LAST_MODIFIED" type="TIMESTAMP"/>
 		<db-attribute name="SONG_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="SONG_URL" type="VARCHAR" isMandatory="true" length="256"/>
 	</db-entity>
 	<db-entity name="USER" catalog="beatseshDB">
+		<db-attribute name="CREATED" type="TIMESTAMP"/>
 		<db-attribute name="EMAIL_ADDRESS" type="VARCHAR" length="128"/>
 		<db-attribute name="FIRST_NAME" type="VARCHAR" length="48"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="IS_DJ" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="IS_DJ" type="BOOLEAN" isMandatory="true" length="3"/>
+		<db-attribute name="LAST_MODIFIED" type="TIMESTAMP"/>
 		<db-attribute name="LAST_NAME" type="VARCHAR" length="48"/>
 		<db-attribute name="PARTY_ID" type="INTEGER" length="10"/>
 		<db-attribute name="PASSWORD" type="VARCHAR" length="256"/>
 	</db-entity>
-	<obj-entity name="AutoPkSupport" className="beatseshDB.AutoPkSupport" dbEntityName="AUTO_PK_SUPPORT">
-		<obj-attribute name="tableName" type="java.lang.String" db-attribute-path="TABLE_NAME"/>
-		<obj-attribute name="nextId" type="long" db-attribute-path="NEXT_ID"/>
-	</obj-entity>
 	<obj-entity name="Party" className="beatseshDB.Party" dbEntityName="PARTY">
 		<obj-attribute name="lastModified" type="java.time.LocalDateTime" db-attribute-path="LAST_MODIFIED"/>
 		<obj-attribute name="partyName" type="java.lang.String" db-attribute-path="PARTY_NAME"/>
 		<obj-attribute name="partyCode" type="int" db-attribute-path="PARTY_CODE"/>
-		<obj-attribute name="mp3" type="byte[]" db-attribute-path="MP3"/>
+		<obj-attribute name="created" type="java.time.LocalDateTime" db-attribute-path="CREATED"/>
 	</obj-entity>
 	<obj-entity name="Song" className="beatseshDB.Song" dbEntityName="SONG">
-		<obj-attribute name="link" type="java.lang.String" db-attribute-path="LINK"/>
+		<obj-attribute name="link" type="java.lang.String" db-attribute-path="SONG_URL"/>
 		<obj-attribute name="songName" type="java.lang.String" db-attribute-path="SONG_NAME"/>
-		<obj-attribute name="songArtist" type="java.lang.String" db-attribute-path="SONG_ARTIST"/>
+		<obj-attribute name="songArtist" type="java.lang.String" db-attribute-path="ARTIST_NAME"/>
+		<obj-attribute name="created" type="java.time.LocalDateTime" db-attribute-path="CREATED"/>
+		<obj-attribute name="lastModified" type="java.time.LocalDateTime" db-attribute-path="LAST_MODIFIED"/>
 	</obj-entity>
 	<obj-entity name="User" className="beatseshDB.User" dbEntityName="USER">
 		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="EMAIL_ADDRESS"/>
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="FIRST_NAME"/>
-		<obj-attribute name="isDj" type="short" db-attribute-path="IS_DJ"/>
+		<obj-attribute name="isDj" type="java.lang.Boolean" db-attribute-path="IS_DJ"/>
 		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="LAST_NAME"/>
-		<obj-attribute name="partyId" type="int" db-attribute-path="PARTY_ID"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="PASSWORD"/>
+		<obj-attribute name="partyID" type="int" db-attribute-path="PARTY_ID"/>
+		<obj-attribute name="created" type="java.time.LocalDateTime" db-attribute-path="CREATED"/>
+		<obj-attribute name="lastModified" type="java.time.LocalDateTime" db-attribute-path="LAST_MODIFIED"/>
 	</obj-entity>
 	<db-relationship name="parent" source="JOIN_PARTY_SONG" target="PARTY">
 		<db-attribute-pair source="PARENT_ID" target="ID"/>
@@ -89,10 +89,7 @@
 	<obj-relationship name="songs" source="Party" target="Song" db-relationship-path="joinPartySongs.child"/>
 	<obj-relationship name="parties" source="Song" target="Party" db-relationship-path="joinPartySongs.parent"/>
 	<obj-relationship name="parties" source="User" target="Party" db-relationship-path="joinPartyUsers.parent"/>
-	<dbImport xmlns="http://cayenne.apache.org/schema/10/dbimport">
-		<catalog>
-			<name>beatseshDB</name>
-		</catalog>
+	<config xmlns="http://cayenne.apache.org/schema/10/dbimport">
 		<forceDataMapCatalog>false</forceDataMapCatalog>
 		<forceDataMapSchema>false</forceDataMapSchema>
 		<namingStrategy>org.apache.cayenne.dbsync.naming.DefaultObjectNameGenerator</namingStrategy>
@@ -100,18 +97,5 @@
 		<skipRelationshipsLoading>false</skipRelationshipsLoading>
 		<useJava7Types>false</useJava7Types>
 		<usePrimitives>true</usePrimitives>
-	</dbImport>
-	<cgen xmlns="http://cayenne.apache.org/schema/10/cgen">
-		<destDir>../java</destDir>
-		<mode>entity</mode>
-		<template>templates/v4_1/subclass.vm</template>
-		<superTemplate>templates/v4_1/superclass.vm</superTemplate>
-		<outputPattern>*.java</outputPattern>
-		<makePairs>true</makePairs>
-		<usePkgPath>true</usePkgPath>
-		<overwrite>false</overwrite>
-		<createPropertyNames>false</createPropertyNames>
-		<createPKProperties>false</createPKProperties>
-		<client>false</client>
-	</cgen>
+	</config>
 </data-map>

@@ -3,6 +3,7 @@ package beatseshDB.auto;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.cayenne.BaseDataObject;
@@ -24,18 +25,22 @@ public abstract class _User extends BaseDataObject {
 
     public static final Property<String> EMAIL_ADDRESS = Property.create("emailAddress", String.class);
     public static final Property<String> FIRST_NAME = Property.create("firstName", String.class);
-    public static final Property<Short> IS_DJ = Property.create("isDj", Short.class);
+    public static final Property<Boolean> IS_DJ = Property.create("isDj", Boolean.class);
     public static final Property<String> LAST_NAME = Property.create("lastName", String.class);
-    public static final Property<Integer> PARTY_ID = Property.create("partyId", Integer.class);
     public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<Integer> PARTY_ID = Property.create("partyID", Integer.class);
+    public static final Property<LocalDateTime> CREATED = Property.create("created", LocalDateTime.class);
+    public static final Property<LocalDateTime> LAST_MODIFIED = Property.create("lastModified", LocalDateTime.class);
     public static final Property<List<Party>> PARTIES = Property.create("parties", List.class);
 
     protected String emailAddress;
     protected String firstName;
-    protected short isDj;
+    protected Boolean isDj;
     protected String lastName;
-    protected Integer partyId;
     protected String password;
+    protected Integer partyID;
+    protected LocalDateTime created;
+    protected LocalDateTime lastModified;
 
     protected Object parties;
 
@@ -59,12 +64,12 @@ public abstract class _User extends BaseDataObject {
         return this.firstName;
     }
 
-    public void setIsDj(short isDj) {
+    public void setIsDj(Boolean isDj) {
         beforePropertyWrite("isDj", this.isDj, isDj);
         this.isDj = isDj;
     }
 
-    public short getIsDj() {
+    public Boolean getIsDj() {
         beforePropertyRead("isDj");
         return this.isDj;
     }
@@ -79,19 +84,6 @@ public abstract class _User extends BaseDataObject {
         return this.lastName;
     }
 
-    public void setPartyId(int partyId) {
-        beforePropertyWrite("partyId", this.partyId, partyId);
-        this.partyId = partyId;
-    }
-
-    public int getPartyId() {
-        beforePropertyRead("partyId");
-        if(this.partyId == null) {
-            return 0;
-        }
-        return this.partyId;
-    }
-
     public void setPassword(String password) {
         beforePropertyWrite("password", this.password, password);
         this.password = password;
@@ -100,6 +92,39 @@ public abstract class _User extends BaseDataObject {
     public String getPassword() {
         beforePropertyRead("password");
         return this.password;
+    }
+
+    public void setPartyID(int partyID) {
+        beforePropertyWrite("partyID", this.partyID, partyID);
+        this.partyID = partyID;
+    }
+
+    public int getPartyID() {
+        beforePropertyRead("partyID");
+        if(this.partyID == null) {
+            return 0;
+        }
+        return this.partyID;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
+    }
+
+    public LocalDateTime getCreated() {
+        beforePropertyRead("created");
+        return this.created;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        beforePropertyWrite("lastModified", this.lastModified, lastModified);
+        this.lastModified = lastModified;
+    }
+
+    public LocalDateTime getLastModified() {
+        beforePropertyRead("lastModified");
+        return this.lastModified;
     }
 
     public void addToParties(Party obj) {
@@ -130,10 +155,14 @@ public abstract class _User extends BaseDataObject {
                 return this.isDj;
             case "lastName":
                 return this.lastName;
-            case "partyId":
-                return this.partyId;
             case "password":
                 return this.password;
+            case "partyID":
+                return this.partyID;
+            case "created":
+                return this.created;
+            case "lastModified":
+                return this.lastModified;
             case "parties":
                 return this.parties;
             default:
@@ -155,16 +184,22 @@ public abstract class _User extends BaseDataObject {
                 this.firstName = (String)val;
                 break;
             case "isDj":
-                this.isDj = val == null ? 0 : (short)val;
+                this.isDj = (Boolean)val;
                 break;
             case "lastName":
                 this.lastName = (String)val;
                 break;
-            case "partyId":
-                this.partyId = (Integer)val;
-                break;
             case "password":
                 this.password = (String)val;
+                break;
+            case "partyID":
+                this.partyID = (Integer)val;
+                break;
+            case "created":
+                this.created = (LocalDateTime)val;
+                break;
+            case "lastModified":
+                this.lastModified = (LocalDateTime)val;
                 break;
             case "parties":
                 this.parties = val;
@@ -187,10 +222,12 @@ public abstract class _User extends BaseDataObject {
         super.writeState(out);
         out.writeObject(this.emailAddress);
         out.writeObject(this.firstName);
-        out.writeShort(this.isDj);
+        out.writeObject(this.isDj);
         out.writeObject(this.lastName);
-        out.writeObject(this.partyId);
         out.writeObject(this.password);
+        out.writeObject(this.partyID);
+        out.writeObject(this.created);
+        out.writeObject(this.lastModified);
         out.writeObject(this.parties);
     }
 
@@ -199,10 +236,12 @@ public abstract class _User extends BaseDataObject {
         super.readState(in);
         this.emailAddress = (String)in.readObject();
         this.firstName = (String)in.readObject();
-        this.isDj = in.readShort();
+        this.isDj = (Boolean)in.readObject();
         this.lastName = (String)in.readObject();
-        this.partyId = (Integer)in.readObject();
         this.password = (String)in.readObject();
+        this.partyID = (Integer)in.readObject();
+        this.created = (LocalDateTime)in.readObject();
+        this.lastModified = (LocalDateTime)in.readObject();
         this.parties = in.readObject();
     }
 

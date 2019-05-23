@@ -27,14 +27,14 @@ public abstract class _Party extends BaseDataObject {
     public static final Property<LocalDateTime> LAST_MODIFIED = Property.create("lastModified", LocalDateTime.class);
     public static final Property<String> PARTY_NAME = Property.create("partyName", String.class);
     public static final Property<Integer> PARTY_CODE = Property.create("partyCode", Integer.class);
-    public static final Property<byte[]> MP3 = Property.create("mp3", byte[].class);
+    public static final Property<LocalDateTime> CREATED = Property.create("created", LocalDateTime.class);
     public static final Property<List<User>> USERS = Property.create("users", List.class);
     public static final Property<List<Song>> SONGS = Property.create("songs", List.class);
 
     protected LocalDateTime lastModified;
     protected String partyName;
     protected int partyCode;
-    protected byte[] mp3;
+    protected LocalDateTime created;
 
     protected Object users;
     protected Object songs;
@@ -69,14 +69,14 @@ public abstract class _Party extends BaseDataObject {
         return this.partyCode;
     }
 
-    public void setMp3(byte[] mp3) {
-        beforePropertyWrite("mp3", this.mp3, mp3);
-        this.mp3 = mp3;
+    public void setCreated(LocalDateTime created) {
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
 
-    public byte[] getMp3() {
-        beforePropertyRead("mp3");
-        return this.mp3;
+    public LocalDateTime getCreated() {
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void addToUsers(User obj) {
@@ -118,8 +118,8 @@ public abstract class _Party extends BaseDataObject {
                 return this.partyName;
             case "partyCode":
                 return this.partyCode;
-            case "mp3":
-                return this.mp3;
+            case "created":
+                return this.created;
             case "users":
                 return this.users;
             case "songs":
@@ -145,8 +145,8 @@ public abstract class _Party extends BaseDataObject {
             case "partyCode":
                 this.partyCode = val == null ? 0 : (int)val;
                 break;
-            case "mp3":
-                this.mp3 = (byte[])val;
+            case "created":
+                this.created = (LocalDateTime)val;
                 break;
             case "users":
                 this.users = val;
@@ -173,7 +173,7 @@ public abstract class _Party extends BaseDataObject {
         out.writeObject(this.lastModified);
         out.writeObject(this.partyName);
         out.writeInt(this.partyCode);
-        out.writeObject(this.mp3);
+        out.writeObject(this.created);
         out.writeObject(this.users);
         out.writeObject(this.songs);
     }
@@ -184,7 +184,7 @@ public abstract class _Party extends BaseDataObject {
         this.lastModified = (LocalDateTime)in.readObject();
         this.partyName = (String)in.readObject();
         this.partyCode = in.readInt();
-        this.mp3 = (byte[])in.readObject();
+        this.created = (LocalDateTime)in.readObject();
         this.users = in.readObject();
         this.songs = in.readObject();
     }

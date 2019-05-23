@@ -17,6 +17,7 @@ public abstract class _AutoPkSupport extends BaseDataObject {
 
     private static final long serialVersionUID = 1L; 
 
+    public static final String NEXT_ID_PK_COLUMN = "NEXT_ID";
 
     public static final Property<String> TABLE_NAME = Property.create("tableName", String.class);
     public static final Property<Long> NEXT_ID = Property.create("nextId", Long.class);

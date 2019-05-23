@@ -3,6 +3,7 @@ package beatseshDB.auto;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.cayenne.BaseDataObject;
@@ -25,11 +26,15 @@ public abstract class _Song extends BaseDataObject {
     public static final Property<String> LINK = Property.create("link", String.class);
     public static final Property<String> SONG_NAME = Property.create("songName", String.class);
     public static final Property<String> SONG_ARTIST = Property.create("songArtist", String.class);
+    public static final Property<LocalDateTime> CREATED = Property.create("created", LocalDateTime.class);
+    public static final Property<LocalDateTime> LAST_MODIFIED = Property.create("lastModified", LocalDateTime.class);
     public static final Property<List<Party>> PARTIES = Property.create("parties", List.class);
 
     protected String link;
     protected String songName;
     protected String songArtist;
+    protected LocalDateTime created;
+    protected LocalDateTime lastModified;
 
     protected Object parties;
 
@@ -63,6 +68,26 @@ public abstract class _Song extends BaseDataObject {
         return this.songArtist;
     }
 
+    public void setCreated(LocalDateTime created) {
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
+    }
+
+    public LocalDateTime getCreated() {
+        beforePropertyRead("created");
+        return this.created;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        beforePropertyWrite("lastModified", this.lastModified, lastModified);
+        this.lastModified = lastModified;
+    }
+
+    public LocalDateTime getLastModified() {
+        beforePropertyRead("lastModified");
+        return this.lastModified;
+    }
+
     public void addToParties(Party obj) {
         addToManyTarget("parties", obj, true);
     }
@@ -89,6 +114,10 @@ public abstract class _Song extends BaseDataObject {
                 return this.songName;
             case "songArtist":
                 return this.songArtist;
+            case "created":
+                return this.created;
+            case "lastModified":
+                return this.lastModified;
             case "parties":
                 return this.parties;
             default:
@@ -112,6 +141,12 @@ public abstract class _Song extends BaseDataObject {
             case "songArtist":
                 this.songArtist = (String)val;
                 break;
+            case "created":
+                this.created = (LocalDateTime)val;
+                break;
+            case "lastModified":
+                this.lastModified = (LocalDateTime)val;
+                break;
             case "parties":
                 this.parties = val;
                 break;
@@ -134,6 +169,8 @@ public abstract class _Song extends BaseDataObject {
         out.writeObject(this.link);
         out.writeObject(this.songName);
         out.writeObject(this.songArtist);
+        out.writeObject(this.created);
+        out.writeObject(this.lastModified);
         out.writeObject(this.parties);
     }
 
@@ -143,6 +180,8 @@ public abstract class _Song extends BaseDataObject {
         this.link = (String)in.readObject();
         this.songName = (String)in.readObject();
         this.songArtist = (String)in.readObject();
+        this.created = (LocalDateTime)in.readObject();
+        this.lastModified = (LocalDateTime)in.readObject();
         this.parties = in.readObject();
     }
 
