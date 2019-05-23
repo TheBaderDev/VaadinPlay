@@ -1,12 +1,13 @@
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/layouts/LoginView.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_User.java
-/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_Song.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/Party.java
-/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_Party.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/Song.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/AutoPkSupport.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/database/Manager.java
-/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/User.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_AutoPkSupport.java
-/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/layouts/MainView.java
 /home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/layouts/HeaderLayout.java
+/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_Song.java
+/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/auto/_Party.java
+/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/layouts/InfoView.java
+/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/beatseshDB/User.java
+/home/darthbader/git/VaadinPlay/vaadinplay/src/main/java/layouts/MainView.java

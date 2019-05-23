@@ -42,7 +42,6 @@ public class LoginView extends Div {
         titleDiv.add(title);
         add(titleDiv, new Hr());
 
-        
         Div normalDiv = new Div();
         TextField nameField = new TextField();
         nameField.setPlaceholder("Nickname");

@@ -58,8 +58,10 @@ public class MainView extends VerticalLayout implements HasErrorParameter<NotFou
 	}
 	
 	public void goToDjPanel() {
-		this.remove(loginView);
-		this.add(new Label(Integer.toString(currentParty.getPartyCode())));
+		if (currentUser != null) {
+			this.remove(loginView);
+			this.add(new Label(Integer.toString(currentParty.getPartyCode())));
+		}
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
 @HtmlImport("HeaderLayoutStyle.html")
-public class HeaderLayout extends HorizontalLayout {
+public class HeaderLayout extends Div {
 	
 	public HeaderLayout() {
 //		add(new Button("Home", e -> {
