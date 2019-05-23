@@ -11,12 +11,10 @@ import com.vaadin.flow.server.VaadinService;
  * @see VaadinService#getCurrentRequest()
  */
 public final class CurrentUser {
-
     /**
      * The attribute key used to store the username in the session.
      */
-    public static final String CURRENT_USER_SESSION_ATTRIBUTE_KEY = CurrentUser.class
-                    .getCanonicalName();
+    public static final String CURRENT_USER_SESSION_ATTRIBUTE_KEY = CurrentUser.class.getCanonicalName();
 
     private CurrentUser() {
     }
@@ -28,8 +26,8 @@ public final class CurrentUser {
      *             if the current session cannot be accessed.
      */
     public static String get() {
-        String currentUser = (String) getCurrentRequest().getWrappedSession()
-                        .getAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
+        String currentUser = (String) getCurrentRequest().getWrappedSession().getAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
+
         if (currentUser == null) {
             return "";
         } else {
@@ -46,19 +44,17 @@ public final class CurrentUser {
      */
     public static void set(String currentUser) {
         if (currentUser == null) {
-            getCurrentRequest().getWrappedSession().removeAttribute(
-                            CURRENT_USER_SESSION_ATTRIBUTE_KEY);
+            getCurrentRequest().getWrappedSession().removeAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
         } else {
-            getCurrentRequest().getWrappedSession().setAttribute(
-                            CURRENT_USER_SESSION_ATTRIBUTE_KEY, currentUser);
+            getCurrentRequest().getWrappedSession().setAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY, currentUser);
         }
     }
 
     private static VaadinRequest getCurrentRequest() {
         VaadinRequest request = VaadinService.getCurrentRequest();
+
         if (request == null) {
-            throw new IllegalStateException(
-                            "No request bound to current thread.");
+            throw new IllegalStateException("No request bound to current thread.");
         }
         return request;
     }

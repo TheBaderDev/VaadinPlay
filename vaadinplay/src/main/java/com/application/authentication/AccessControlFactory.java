@@ -11,7 +11,7 @@ public class AccessControlFactory {
         return INSTANCE;
     }
 
-    public AccessControl createAccessControl() {
+    public AccessControl getAccessControl() {
         return accessControl;
     }
 }

@@ -1,8 +1,10 @@
 package com.application;
 
+import org.apache.log4j.Logger;
+
 import com.application.authentication.AccessControl;
 import com.application.authentication.AccessControlFactory;
-import com.application.authentication.LoginScreen;
+import com.application.layouts.LoginView;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
@@ -12,16 +14,20 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
  * in META-INF/services.
  */
 public class ApplicationInitListener implements VaadinServiceInitListener {
+    protected static Logger logger = Logger.getLogger(ApplicationInitListener.class);
+
     @Override
     public void serviceInit(ServiceInitEvent initEvent) {
-        final AccessControl accessControl = AccessControlFactory.getInstance()
-                        .createAccessControl();
+        final AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
+        logger.info("");
         initEvent.getSource().addUIInitListener(uiInitEvent -> {
             uiInitEvent.getUI().addBeforeEnterListener(enterEvent -> {
-                if (!accessControl.isUserSignedIn() && !LoginScreen.class
-                                .equals(enterEvent.getNavigationTarget()))
-                    enterEvent.rerouteTo(LoginScreen.class);
+                logger.info("");
+
+                if (!accessControl.isUserSignedIn() && !LoginView.class.equals(enterEvent.getNavigationTarget())) {
+                    enterEvent.rerouteTo(LoginView.class);
+                }
             });
         });
     }

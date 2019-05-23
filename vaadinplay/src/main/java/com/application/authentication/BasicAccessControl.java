@@ -8,14 +8,17 @@ import com.vaadin.flow.server.VaadinSession;
  * considers the user "admin" as the only administrator.
  */
 public class BasicAccessControl implements AccessControl {
+    private static final long serialVersionUID = 9084082191997440927L;
 
     @Override
     public boolean signIn(String username, String password) {
-        if (username == null || username.isEmpty())
+        if (username == null || username.isEmpty()) {
             return false;
+        }
 
-        if (!username.equals(password))
+        if (!username.equals(password)) {
             return false;
+        }
 
         CurrentUser.set(username);
         return true;
@@ -30,10 +33,12 @@ public class BasicAccessControl implements AccessControl {
     public boolean isUserInRole(String role) {
         if ("admin".equals(role)) {
             // Only the "admin" user is in the "admin" role
+            //
             return getPrincipalName().equals("admin");
         }
 
         // All users are in all non-admin roles
+        //
         return true;
     }
 
