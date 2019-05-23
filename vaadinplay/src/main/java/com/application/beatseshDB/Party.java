@@ -1,10 +1,10 @@
-package beatseshDB;
+package com.application.beatseshDB;
 
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 
-import beatseshDB.auto._Party;
+import com.application.beatseshDB.auto._Party;
 
 public class Party extends _Party {
 

@@ -1,7 +1,10 @@
-package layouts;
+package com.application.layouts;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.application.beatseshDB.Party;
+import com.application.beatseshDB.User;
+import com.application.database.Manager;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Label;
@@ -10,10 +13,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.ErrorParameter;
 import com.vaadin.flow.router.HasErrorParameter;
 import com.vaadin.flow.router.NotFoundException;
-
-import beatseshDB.Party;
-import beatseshDB.User;
-import database.Manager;
 
 @HtmlImport("MainBoxLayoutStyle.html")
 public class MainView extends VerticalLayout implements HasErrorParameter<NotFoundException> {

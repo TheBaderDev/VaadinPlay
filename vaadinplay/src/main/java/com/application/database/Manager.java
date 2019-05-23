@@ -1,4 +1,4 @@
-package database;
+package com.application.database;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -9,9 +9,9 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.datasource.DataSourceBuilder;
 import org.apache.cayenne.query.ObjectSelect;
 
-import beatseshDB.Party;
-import beatseshDB.Song;
-import beatseshDB.User;
+import com.application.beatseshDB.Party;
+import com.application.beatseshDB.Song;
+import com.application.beatseshDB.User;
 
 public class Manager {
 

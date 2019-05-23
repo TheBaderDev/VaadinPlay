@@ -3,7 +3,7 @@
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
 	 project-version="10">
-	<property name="defaultPackage" value="beatseshDB"/>
+	<property name="defaultPackage" value="com.application.beatseshDB"/>
 	<db-entity name="JOIN_PARTY_SONG" catalog="beatseshDB">
 		<db-attribute name="CHILD_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
@@ -38,20 +38,20 @@
 		<db-attribute name="PARTY_ID" type="INTEGER" length="10"/>
 		<db-attribute name="PASSWORD" type="VARCHAR" length="256"/>
 	</db-entity>
-	<obj-entity name="Party" className="beatseshDB.Party" dbEntityName="PARTY">
+	<obj-entity name="Party" className="com.application.beatseshDB.Party" dbEntityName="PARTY">
 		<obj-attribute name="lastModified" type="java.time.LocalDateTime" db-attribute-path="LAST_MODIFIED"/>
 		<obj-attribute name="partyName" type="java.lang.String" db-attribute-path="PARTY_NAME"/>
 		<obj-attribute name="partyCode" type="int" db-attribute-path="PARTY_CODE"/>
 		<obj-attribute name="created" type="java.time.LocalDateTime" db-attribute-path="CREATED"/>
 	</obj-entity>
-	<obj-entity name="Song" className="beatseshDB.Song" dbEntityName="SONG">
+	<obj-entity name="Song" className="com.application.beatseshDB.Song" dbEntityName="SONG">
 		<obj-attribute name="link" type="java.lang.String" db-attribute-path="SONG_URL"/>
 		<obj-attribute name="songName" type="java.lang.String" db-attribute-path="SONG_NAME"/>
 		<obj-attribute name="songArtist" type="java.lang.String" db-attribute-path="ARTIST_NAME"/>
 		<obj-attribute name="created" type="java.time.LocalDateTime" db-attribute-path="CREATED"/>
 		<obj-attribute name="lastModified" type="java.time.LocalDateTime" db-attribute-path="LAST_MODIFIED"/>
 	</obj-entity>
-	<obj-entity name="User" className="beatseshDB.User" dbEntityName="USER">
+	<obj-entity name="User" className="com.application.beatseshDB.User" dbEntityName="USER">
 		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="EMAIL_ADDRESS"/>
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="FIRST_NAME"/>
 		<obj-attribute name="isDj" type="java.lang.Boolean" db-attribute-path="IS_DJ"/>

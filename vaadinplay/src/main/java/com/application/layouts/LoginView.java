@@ -1,5 +1,8 @@
-package layouts;
+package com.application.layouts;
 
+import com.application.beatseshDB.Party;
+import com.application.beatseshDB.User;
+import com.application.database.Manager;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
@@ -8,10 +11,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
-
-import beatseshDB.Party;
-import beatseshDB.User;
-import database.Manager;
 
 /**
  * The main view contains a button and a click listener.
