@@ -64,16 +64,8 @@ public class Application extends UI {
 
     public void showLoginView() {
         logger.info("");
-        //        try {
-        //            Class<?> loginViewClass = IDDUI.getCurrent().getLoginViewClass();
-        //            Component loginView = (Component) loginViewClass.newInstance();
-        //
-        //            setContent(loginView);
-        //            addStyleName("loginview");
-        //        } catch (Exception e) {
-        //            _showUsecureView();
-        //            logger.error(IDDUtil.stackTrace(e));
-        //        }
+        this.a
+        setContent(new LoginView());
     }
 
     /*
@@ -81,6 +73,7 @@ public class Application extends UI {
      */
     public void showMainWindow() {
         logger.info("");
+        setContent(new LoginView());
         //        try {
         //            Class<?> mainView = IDDUI.getCurrent().getMainViewClass();
         //
