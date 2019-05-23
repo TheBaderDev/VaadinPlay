@@ -1,5 +1,7 @@
 package com.application.authentication;
 
+import com.application.layouts.AdminView;
+import com.application.layouts.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H1;
@@ -78,8 +80,7 @@ public class LoginScreen extends FlexLayout {
     private void registerAdminViewIfApplicable() {
         // register the admin view dynamically only for any admin user logged in
         if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
-            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME,
-                            AdminView.class, MainLayout.class);
+            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME, AdminView.class, MainView.class);
             // as logout will purge the session route registry, no need to
             // unregister the view on logout
         }

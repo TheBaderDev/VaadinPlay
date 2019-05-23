@@ -75,7 +75,6 @@ public class Manager {
         rv.setPartyName(partyName);
         rv.setPartyCode(generatePartyCode());
         rv.setLastModified(LocalDateTime.now());
-        rv.setMp3(null);
 
         context.commitChanges();
         return rv;
@@ -141,8 +140,8 @@ public class Manager {
         rv.setEmailAddress(email);
         rv.setFirstName(firstName);
         rv.setLastName(lastName);
-        rv.setPartyId(party.getPartyCode());
-        rv.setIsDj((short) 1);
+        rv.setPartyID(party.getPartyCode());
+        rv.setIsDj(true);
         rv.setPassword(password);
         party.addToUsers(rv);
         context.commitChanges();
@@ -169,8 +168,8 @@ public class Manager {
         rv.setEmailAddress(null);
         rv.setFirstName(name);
         rv.setLastName(null);
-        rv.setPartyId(party.getPartyCode());
-        rv.setIsDj((short) 0);
+        rv.setPartyID(party.getPartyCode());
+        rv.setIsDj(false);
         rv.setPassword(null);
         party.addToUsers(rv);
 

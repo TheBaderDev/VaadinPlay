@@ -13,9 +13,10 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.ErrorParameter;
 import com.vaadin.flow.router.HasErrorParameter;
 import com.vaadin.flow.router.NotFoundException;
+import com.vaadin.flow.router.RouterLayout;
 
 @HtmlImport("MainBoxLayoutStyle.html")
-public class MainView extends VerticalLayout implements HasErrorParameter<NotFoundException> {
+public class MainView extends VerticalLayout implements HasErrorParameter<NotFoundException>, RouterLayout {
 
     private User currentUser = null;
     private Party currentParty = null;
