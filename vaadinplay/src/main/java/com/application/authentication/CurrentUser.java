@@ -1,5 +1,14 @@
 package com.application.authentication;
 
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ObjectId;
+import org.apache.cayenne.query.ObjectSelect;
+
+import com.application.beatseshDB.Party;
+import com.application.beatseshDB.User;
+import com.application.database.Manager;
+import com.mysql.cj.jdbc.DatabaseMetaData;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinService;
 
@@ -11,11 +20,12 @@ import com.vaadin.flow.server.VaadinService;
  * @see VaadinService#getCurrentRequest()
  */
 public final class CurrentUser {
+
     /**
      * The attribute key used to store the username in the session.
      */
     public static final String CURRENT_USER_SESSION_ATTRIBUTE_KEY = CurrentUser.class.getCanonicalName();
-
+    
     private CurrentUser() {
     }
 
@@ -25,29 +35,32 @@ public final class CurrentUser {
      * @throws IllegalStateException
      *             if the current session cannot be accessed.
      */
-    public static String get() {
+    public static User get() {
         String currentUser = (String) getCurrentRequest().getWrappedSession().getAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
 
-        if (currentUser == null) {
-            return "";
+        if (currentUser == null || currentUser.equals("")) {
+            throw new IllegalArgumentException();
         } else {
-            return currentUser;
+            return Manager.getUserFromDB(Long.parseLong(currentUser));
         }
     }
 
-    /**
+	/**
      * Sets the name of the current user and stores it in the current session. Using a {@code null} username will remove the
      * username from the session.
      * 
      * @throws IllegalStateException
      *             if the current session cannot be accessed.
      */
-    public static void set(String currentUser) {
-        if (currentUser == null) {
-            getCurrentRequest().getWrappedSession().removeAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
-        } else {
-            getCurrentRequest().getWrappedSession().setAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY, currentUser);
-        }
+    public static void set(User user) {
+    	long ID = Cayenne.longPKForObject(user);
+    	getCurrentRequest().getWrappedSession().setAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY, Long.toString(ID));
+
+//        if (ID == null) {
+//            getCurrentRequest().getWrappedSession().removeAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
+//        } else {
+//            getCurrentRequest().getWrappedSession().setAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY, ID);
+//        }
     }
 
     private static VaadinRequest getCurrentRequest() {

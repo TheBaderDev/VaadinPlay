@@ -2,6 +2,8 @@ package com.application.authentication;
 
 import java.io.Serializable;
 
+import com.application.beatseshDB.User;
+
 /**
  * Simple interface for authentication and authorization checks.
  */
@@ -19,4 +21,8 @@ public interface AccessControl extends Serializable {
     String getPrincipalName();
 
     void signOut();
+    
+    boolean signInDj(User user, String partyname);
+    
+    boolean signInNormal(User user);
 }

@@ -3,12 +3,15 @@ package com.application.database;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.datasource.DataSourceBuilder;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 
+import com.application.authentication.CurrentUser;
 import com.application.beatseshDB.Party;
 import com.application.beatseshDB.Song;
 import com.application.beatseshDB.User;
@@ -64,19 +67,25 @@ public class Manager {
      * @param DJ
      * @return
      */
-    public Party makeNewParty(String partyName) throws IllegalArgumentException {
+    public Party makeNewParty(String partyName, User DJ) throws IllegalArgumentException {
         ObjectContext context = Manager.createContext();
 
         if (partyName.equals("")) {
             throw new IllegalArgumentException();
         }
 
+        User tempDJ = SelectById.query(User.class, Cayenne.longPKForObject(DJ)).selectOne(context);
+
         Party rv = context.newObject(Party.class);
         rv.setPartyName(partyName);
-        rv.setPartyCode(generatePartyCode());
+        int code = generatePartyCode();
+        rv.setPartyCode(code);
         rv.setLastModified(LocalDateTime.now());
+        tempDJ.setPartyID(code);
+        rv.addToUsers(tempDJ);
 
         context.commitChanges();
+        CurrentUser.set(tempDJ);
         return rv;
     }
 
@@ -133,20 +142,20 @@ public class Manager {
      * @param password
      * @return
      */
-    public User makeDJ(Party group, String email, String firstName, String lastName, String password) {
+    public User makeDJ(String email, String firstName, String lastName, String password) {
         ObjectContext context = Manager.createContext();
-        Party party = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(group.getPartyCode())).selectOne(context);
+        //Party party = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(group.getPartyCode())).selectOne(context);
         User rv = context.newObject(User.class);
         rv.setEmailAddress(email);
         rv.setFirstName(firstName);
         rv.setLastName(lastName);
-        rv.setPartyID(party.getPartyCode());
+        //rv.setPartyID(party.getPartyCode());
+        rv.setPartyID(-1);
         rv.setIsDj(true);
         rv.setPassword(password);
-        party.addToUsers(rv);
+        //party.addToUsers(rv);
         context.commitChanges();
         return rv;
-
     }
 
     /**
@@ -177,4 +186,34 @@ public class Manager {
         return rv;
     }
 
+	public static User getUserFromDB(long l) {
+		ObjectContext context = Manager.createContext();
+		User rv = SelectById.query(User.class, l).selectOne(context);
+		return rv;
+	}
+	
+	public static User getUserFromDB(String email, String password) {
+		ObjectContext context = Manager.createContext();
+		User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
+		if (rv == null || !rv.getPassword().equalsIgnoreCase(password)) {
+			throw new IllegalArgumentException("Bad Password or Email");
+		} else {
+			return rv;
+		}
+	}
+	
+	
+
+	public void checkForDjError(String email, String first, String last, String pass1, String pass2) {
+		if (email.contentEquals("") || first.contentEquals("") || last.contentEquals("") || pass1.contentEquals("") || pass2.contentEquals("")) {
+			throw new IllegalArgumentException("Can't Leave Any Field Blank");
+		} else if (!pass1.contentEquals(pass2)) {
+			throw new IllegalArgumentException("Passwords are not the same " + pass1 + " vs " + pass2);
+		}
+		ObjectContext context = Manager.createContext();
+		User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
+		if (rv != null) {
+			throw new IllegalArgumentException("Email Address Already Taken");
+		}
+	}
 }

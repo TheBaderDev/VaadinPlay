@@ -1,0 +1,126 @@
+package com.application.layouts;
+
+import org.apache.log4j.Logger;
+
+import com.application.authentication.AccessControl;
+import com.application.authentication.AccessControlFactory;
+import com.application.authentication.CurrentUser;
+import com.application.beatseshDB.Party;
+import com.application.beatseshDB.User;
+import com.application.database.Manager;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+
+@Route("djlogin")
+@PageTitle("DJ Login")
+@HtmlImport("MainBoxLayoutStyle.html")
+public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
+	private static final long serialVersionUID = 4767522515196076677L;
+	protected static Logger logger = Logger.getLogger(NormalLogin.class);
+	private int registerCounter = 0;
+
+	public DJLogin() {
+		
+		logger.info("");
+		_loadBackGround();
+		_loadView();
+	}
+	
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {
+		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+
+		if (accessControl.isUserSignedIn()) {
+			if (CurrentUser.get().getIsDj()) {
+				event.rerouteTo(DJPanel.class);
+			} else {
+				event.rerouteTo(NormalPanel.class);
+			}
+		}
+	}
+
+	private void _loadBackGround() {
+		getStyle().set("background-image", "url(frontend/shattered-island.gif)");
+		setPadding(false);
+		setSpacing(false);
+		setSizeFull();
+		setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
+	}
+
+	private void _loadView() {
+		Div allDiv = new Div();
+		// allDiv.getStyle().set("background-image", "url(frontend/sayagata-400px.png");
+
+		Div titleDiv = new Div();
+		Label title = new Label("DJ Login");
+		title.addClassName("title");
+		titleDiv.addClassName("titleDiv");
+		titleDiv.add(title);
+		allDiv.add(titleDiv, new Hr());
+
+		Div djDiv = new Div();
+		TextField djEmail = new TextField();
+		djEmail.setPlaceholder("Email");
+		TextField djPassword = new TextField();
+		djPassword.setPlaceholder("Password");
+		TextField partyName = new TextField();
+		partyName.setPlaceholder("Party Name");
+		Button makePartyButton = new Button("Make Party", e -> {
+			logger.info("");
+			try {				
+				if (partyName.getValue().equals("") || djEmail.getValue().equals("")
+						|| djPassword.getValue().contentEquals("")) {
+					throw new IllegalArgumentException();
+				}
+
+				User user = Manager.getUserFromDB(djEmail.getValue(), djPassword.getValue());
+				AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+				accessControl.signInDj(user, partyName.getValue());
+				
+				//Navigate
+				UI.getCurrent().navigate("djpanel");
+				
+				Notification.show("Party Created Successfully");
+			} catch (IllegalArgumentException e1) {
+				Notification.show(e1.getMessage());
+			}
+		});
+		makePartyButton.addClassName("button");
+		djEmail.addClassName("input");
+		djPassword.addClassName("input");
+		partyName.addClassName("input");
+		djDiv.add(djEmail, new Hr(), djPassword, new Hr(), partyName, new Hr(), makePartyButton);
+		allDiv.add(djDiv);
+
+		Div otherDiv = new Div();
+		Button otherButton = new Button("Sign In Normally", e -> {
+			UI.getCurrent().navigate(NormalLogin.class);
+		});
+		Button registerButton = new Button("Register (first time)", e -> {
+			if (registerCounter == 0) {
+				allDiv.add(new RegisterPopUp());
+				registerCounter++;
+			}
+		});
+		registerButton.addClassName("other");
+		registerButton.addClassName("register");
+		otherButton.addClassName("other");
+		otherDiv.add(otherButton, registerButton);
+		allDiv.add(otherDiv);
+
+		allDiv.addClassName("all");
+		add(allDiv);
+	}
+}

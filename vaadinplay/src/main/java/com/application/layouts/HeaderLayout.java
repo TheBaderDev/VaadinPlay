@@ -19,15 +19,15 @@ public class HeaderLayout extends Div {
         setHeight("50px");
         //setWidth("500px");
 
-        RouterLink search = new RouterLink("Search", LoginView.class);
+        RouterLink search = new RouterLink("Search", NormalLogin.class);
         search.addClassName("push");
         search.getStyle().set("text-decoration", "none");
-        RouterLink home = new RouterLink("Home", LoginView.class);
+        RouterLink home = new RouterLink("Home", NormalLogin.class);
         home.getStyle().set("text-decoration", "none");
         home.addClassName("endleft");
-        RouterLink Info = new RouterLink("Info", LoginView.class);
+        RouterLink Info = new RouterLink("Info", NormalLogin.class);
         Info.getStyle().set("text-decoration", "none");
-        RouterLink contact = new RouterLink("Contact", LoginView.class);
+        RouterLink contact = new RouterLink("Contact", NormalLogin.class);
         contact.getStyle().set("text-decoration", "none");
         add(home);
         add(Info);
