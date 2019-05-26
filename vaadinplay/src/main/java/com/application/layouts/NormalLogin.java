@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import com.application.authentication.AccessControl;
 import com.application.authentication.AccessControlFactory;
 import com.application.authentication.CurrentUser;
+import com.application.beatseshDB.User;
+import com.application.database.Manager;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.HtmlImport;
@@ -14,6 +16,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -42,11 +45,19 @@ public class NormalLogin extends VerticalLayout implements 	HasErrorParameter<No
         AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
         if (accessControl.isUserSignedIn()) {
-        	if (CurrentUser.get().getIsDj()) {
-                event.rerouteTo(DJPanel.class);
-        	} else {
-        		event.rerouteTo(NormalPanel.class);
+        	try {
+        		CurrentUser.get();
+        		if (CurrentUser.get().getIsDj()) {
+                    event.rerouteTo(DJPanel.class);
+            	} else {
+            		event.rerouteTo(NormalPanel.class);
+            	}
+        	} catch(IllegalArgumentException e) {
+        		accessControl.signOut();
+        	} catch (NullPointerException e) {
+        		accessControl.signOut();
         	}
+        	
         }
     }
 
@@ -75,18 +86,23 @@ public class NormalLogin extends VerticalLayout implements 	HasErrorParameter<No
 		codeField.setPlaceholder("Party Code");
 		Button joinButton = new Button("Join Party", e -> {
 			logger.info("");
-			// try {
-			// User currentUser =
-			// database.makeNormalUser(Integer.parseInt(codeField.getValue()),
-			// nameField.getValue());
-			// navigator.setCurrentUser(currentUser);
-			// navigator.setCurrentParty(currentUser.getParties().get(0));
-			// nameField.setValue("");
-			// codeField.setValue("");
-			// Notification.show("Joined Party Successfully");
-			// } catch (IllegalArgumentException e1) {
-			// Notification.show("Invalid Code or Nickname");
-			// }
+			try {
+				Manager database = new Manager();
+				User currentUser = database.makeNormalUser(Integer.parseInt(codeField.getValue()),
+						nameField.getValue());
+				
+				AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+				accessControl.signInNormal(currentUser);
+				
+				//Navigate
+				UI.getCurrent().navigate("panel");
+				
+				nameField.setValue("");
+				codeField.setValue("");
+				Notification.show("Joined Party Successfully");
+			} catch (IllegalArgumentException e1) {
+				Notification.show("Invalid Code or Nickname");
+			}
 		});
 		joinButton.addClassName("button");
 		nameField.addClassName("input");

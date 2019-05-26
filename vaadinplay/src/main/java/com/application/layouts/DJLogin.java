@@ -32,7 +32,6 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 	private int registerCounter = 0;
 
 	public DJLogin() {
-		
 		logger.info("");
 		_loadBackGround();
 		_loadView();
@@ -43,10 +42,14 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
 		if (accessControl.isUserSignedIn()) {
-			if (CurrentUser.get().getIsDj()) {
-				event.rerouteTo(DJPanel.class);
-			} else {
-				event.rerouteTo(NormalPanel.class);
+			try {
+				if (CurrentUser.get().getIsDj()) {
+					event.rerouteTo(DJPanel.class);
+				} else {
+					event.rerouteTo(NormalPanel.class);
+				}
+			} catch(IllegalArgumentException e) {
+	    		accessControl.signOut();
 			}
 		}
 	}
@@ -82,7 +85,7 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 			try {				
 				if (partyName.getValue().equals("") || djEmail.getValue().equals("")
 						|| djPassword.getValue().contentEquals("")) {
-					throw new IllegalArgumentException();
+					throw new IllegalArgumentException("*Fill in All Fields*");
 				}
 
 				User user = Manager.getUserFromDB(djEmail.getValue(), djPassword.getValue());

@@ -35,7 +35,7 @@ public final class CurrentUser {
      * @throws IllegalStateException
      *             if the current session cannot be accessed.
      */
-    public static User get() {
+    public static User get() throws IllegalArgumentException {
         String currentUser = (String) getCurrentRequest().getWrappedSession().getAttribute(CURRENT_USER_SESSION_ATTRIBUTE_KEY);
 
         if (currentUser == null || currentUser.equals("")) {

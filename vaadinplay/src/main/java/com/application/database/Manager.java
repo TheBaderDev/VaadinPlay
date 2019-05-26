@@ -170,7 +170,7 @@ public class Manager {
         Party party = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(code)).selectOne(context);
 
         if (party == null || name.equals("")) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad Party Code");
         }
 
         User rv = context.newObject(User.class);

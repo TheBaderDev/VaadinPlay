@@ -7,13 +7,18 @@ import com.application.authentication.AccessControlFactory;
 import com.application.authentication.CurrentUser;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("djpanel")
+@PageTitle("DJ Panel")
 public class DJPanel extends VerticalLayout implements BeforeEnterObserver {
 	private static final long serialVersionUID = 4767522515196076677L;
 	protected static Logger logger = Logger.getLogger(NormalLogin.class);
@@ -29,20 +34,30 @@ public class DJPanel extends VerticalLayout implements BeforeEnterObserver {
 		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
 		if (!accessControl.isUserSignedIn()) {
-            event.rerouteTo(DJLogin.class);
+			event.rerouteTo(DJLogin.class);
 		} else {
 			if (!CurrentUser.get().getIsDj()) {
-                event.rerouteTo(NormalPanel.class);
+				event.rerouteTo(NormalPanel.class);
 			}
 		}
 	}
 
 	private void _loadView() {
+		Div allDiv = new Div();
+		Label number = new Label("");
+		try {
+			number = new Label("Party Code: " + Integer.toString(CurrentUser.get().getPartyID()));
+		} catch (IllegalArgumentException e) {
+			
+		}
 		Button signOutButton = new Button("SignOut", e -> {
 			AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 			accessControl.signOut();
 		});
-		add(signOutButton);
+		allDiv.add(number, new Hr(), signOutButton);
+
+		allDiv.addClassName("all");
+		add(allDiv);
 	}
 
 	private void _loadBackGround() {
