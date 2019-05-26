@@ -7,6 +7,7 @@ import com.application.authentication.AccessControlFactory;
 import com.application.authentication.CurrentUser;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -17,6 +18,7 @@ import com.vaadin.flow.router.Route;
 
 @Route("panel")
 @PageTitle("User Panel")
+@HtmlImport("MainBoxLayoutStyle.html")
 public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
 	private static final long serialVersionUID = 4767522515196076677L;
 	protected static Logger logger = Logger.getLogger(NormalLogin.class);
