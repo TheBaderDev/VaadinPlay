@@ -1,5 +1,7 @@
 package com.application.layouts;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 
 import com.application.Broadcaster;
@@ -30,6 +32,8 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
     private static final long serialVersionUID = 4767522515196076677L;
     protected static Logger logger = Logger.getLogger(NormalLogin.class);
     Registration broadcasterRegistration;
+    ArrayList<String> messages = new ArrayList<String>();
+    Button signOutButton = null;
     Div allDiv;
 
     public NormalPanel() {
@@ -60,12 +64,11 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
 
     private void _loadView() {
         allDiv = new Div();
-        Button signOutButton = new Button("SignOut", e -> {
+        signOutButton = new Button("SignOut", e -> {
             AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
             accessControl.signOut();
         });
         allDiv.add(signOutButton);
-
         allDiv.addClassName("all");
         add(allDiv);
     }
@@ -78,11 +81,24 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
         setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
     }
 
+    private void _reloadUI() {
+        allDiv.removeAll();
+        allDiv.add(signOutButton);
+
+        for (String message : messages) {
+            allDiv.add(new Hr(), new Label(message));
+        }
+    }
+
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         UI ui = attachEvent.getUI();
+
         broadcasterRegistration = Broadcaster.register(newMessage -> {
-            ui.access(() -> allDiv.add(new Hr(), new Label(newMessage)));
+            ui.access(() -> {
+                messages.add(newMessage);
+                _reloadUI();
+            });
         });
     }
 
