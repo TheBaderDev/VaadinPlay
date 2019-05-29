@@ -2,6 +2,7 @@ package com.application.layouts;
 
 import org.apache.log4j.Logger;
 
+import com.application.Broadcaster;
 import com.application.authentication.AccessControl;
 import com.application.authentication.AccessControlFactory;
 import com.application.authentication.CurrentUser;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -52,11 +54,21 @@ public class DJPanel extends VerticalLayout implements BeforeEnterObserver {
 		} catch (IllegalArgumentException e) {
 			
 		}
+		
+		Div broadCastDiv = new Div();
+		TextField messageLabel = new TextField("Enter Message");
+		Button sendMessageButton = new Button("Send", e -> {
+			Broadcaster.broadcast(messageLabel.getValue());
+			messageLabel.setValue("");
+		});
+		broadCastDiv.add(messageLabel, sendMessageButton);
+		
 		Button signOutButton = new Button("SignOut", e -> {
 			AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 			accessControl.signOut();
 		});
-		allDiv.add(number, new Hr(), signOutButton);
+		
+		allDiv.add( number, new Hr(), broadCastDiv, new Hr(), signOutButton);
 
 		allDiv.addClassName("all");
 		add(allDiv);

@@ -72,8 +72,16 @@ public class NormalLogin extends VerticalLayout implements 	HasErrorParameter<No
 	private void _loadView() {
 		Div allDiv = new Div();
 		
+		Div otherDiv = new Div();
+		Button otherButton = new Button("Sign In As a DJ", e -> {
+			UI.getCurrent().navigate(DJLogin.class);
+		});
+		otherButton.addClassName("other");
+		otherDiv.add(otherButton);
+		allDiv.add(otherDiv);
+		
 		Div titleDiv = new Div();
-		Label title = new Label("BeatSesh Login");
+		Label title = new Label("BeatSesh");
 		title.addClassName("title");
 		titleDiv.addClassName("titleDiv");
 		titleDiv.add(title);
@@ -109,14 +117,6 @@ public class NormalLogin extends VerticalLayout implements 	HasErrorParameter<No
 		codeField.addClassName("input");
 		normalDiv.add(nameField, new Hr(), codeField, new Hr(), joinButton);
 		allDiv.add(normalDiv);
-		
-		Div otherDiv = new Div();
-		Button otherButton = new Button("Sign In As a DJ", e -> {
-			UI.getCurrent().navigate(DJLogin.class);
-		});
-		otherButton.addClassName("other");
-		otherDiv.add(otherButton);
-		allDiv.add(otherDiv);
 		
 		allDiv.addClassName("all");
 		add(allDiv);
