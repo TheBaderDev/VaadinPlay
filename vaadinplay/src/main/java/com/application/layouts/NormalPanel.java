@@ -84,7 +84,6 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
     private void _reloadUI() {
         allDiv.removeAll();
         allDiv.add(signOutButton);
-
         for (String message : messages) {
             allDiv.add(new Hr(), new Label(message));
         }
