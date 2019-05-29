@@ -1,7 +1,5 @@
 package com.application.layouts;
 
-import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 
 import com.application.Broadcaster;
@@ -14,8 +12,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -32,8 +28,7 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
     private static final long serialVersionUID = 4767522515196076677L;
     protected static Logger logger = Logger.getLogger(NormalLogin.class);
     Registration broadcasterRegistration;
-    ArrayList<String> messages = new ArrayList<String>();
-    Button signOutButton = null;
+    SongView songView = new SongView();
     Div allDiv;
 
     public NormalPanel() {
@@ -64,12 +59,18 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
 
     private void _loadView() {
         allDiv = new Div();
-        signOutButton = new Button("SignOut", e -> {
+        Button signOutButton = new Button("SignOut", e -> {
             AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
             accessControl.signOut();
         });
         allDiv.add(signOutButton);
         allDiv.addClassName("all");
+
+        songView.setPartyCode(CurrentUser.get().getPartyID());
+        songView.setIsDJ(false);
+        allDiv.add(songView);
+
+        songView.reloadSongs();
         add(allDiv);
     }
 
@@ -82,11 +83,7 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
     }
 
     private void _reloadUI() {
-        allDiv.removeAll();
-        allDiv.add(signOutButton);
-        for (String message : messages) {
-            allDiv.add(new Hr(), new Label(message));
-        }
+        songView.reloadSongs();
     }
 
     @Override
@@ -95,7 +92,6 @@ public class NormalPanel extends VerticalLayout implements BeforeEnterObserver {
 
         broadcasterRegistration = Broadcaster.register(newMessage -> {
             ui.access(() -> {
-                messages.add(newMessage);
                 _reloadUI();
             });
         });
