@@ -18,18 +18,6 @@ import com.application.beatseshDB.User;
 
 public class Manager {
 
-    //	public static void main(String[] args) {
-    //		Manager database = new Manager();
-    //        ObjectContext context = Manager.createContext();
-    //
-    ////		Party party = database.makeNewParty("The Test Party");
-    ////		User DJ = database.makeDJ(party, "email", "firstName", "lastName", "password");
-    ////		User normal = database.makeNormalUser(party.getPartyCode(), "Cool Guy");
-    //        
-    //    	Party party = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(8869)).selectOne(context);
-    //    	party.deleteParty(context);
-    //	}
-
     public static ServerRuntime _runtime = null;
 
     public static synchronized ServerRuntime getRuntime() {
@@ -83,9 +71,16 @@ public class Manager {
         rv.setLastModified(LocalDateTime.now());
         tempDJ.setPartyID(code);
         rv.addToUsers(tempDJ);
-
         context.commitChanges();
         CurrentUser.set(tempDJ);
+        
+//    	//Delete Later
+//    	Manager m = new Manager();
+//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Bohemian Rhapsody", "Queen", "www.google.com");
+//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "We Will Rock You", "Queen", "www.google.com");
+//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Don't Stop Me Now", "Queen", "www.google.com");
+//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Another One Bites the Dust", "Queen", "www.google.com");    	
+ 
         return rv;
     }
 
@@ -117,12 +112,25 @@ public class Manager {
      * @param link
      * @return
      */
-    public Song makeNewSong(Party party, String songName, String songArtist, String link) {
+    public Song makeNewSong(Party party, String songName, String songArtist, String link) throws IllegalArgumentException {
+    	if (songName.contentEquals("") || songArtist.equals("") || link.contentEquals("")) {
+    		throw new IllegalArgumentException("Invalid Song");
+    	}
+    	
+    	for (int i = 0; i < party.getSongs().size(); i++) {
+    		if (party.getSongs().get(i).getSongName().equalsIgnoreCase(songName)) {
+    			throw new IllegalArgumentException("Song Already Exists");
+    		}
+    	}
+    	
         ObjectContext context = Manager.createContext();
         Song rv = context.newObject(Song.class);
+        
         rv.setSongName(songName);
         rv.setSongArtist(songArtist);
         rv.setLink(link);
+        rv.setCreated(LocalDateTime.now());
+        rv.setLastModified(LocalDateTime.now());
 
         Party tempParty = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(party.getPartyCode())).selectOne(context);
         tempParty.setLastModified(LocalDateTime.now());
@@ -130,6 +138,15 @@ public class Manager {
 
         context.commitChanges();
         return rv;
+    }
+    
+    public void removeSong(Song song) {
+        ObjectContext context = Manager.createContext();
+        Song tempSong = ObjectSelect.query(Song.class, Song.SONG_NAME.eq(song.getSongName())).selectOne(context);
+        if (tempSong != null) {
+            context.deleteObjects(tempSong);
+        }
+        context.commitChanges();
     }
 
     /**
@@ -202,7 +219,11 @@ public class Manager {
 		}
 	}
 	
-	
+	public static Party getParty(int code) {
+		ObjectContext context = Manager.createContext();
+		Party rv = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(code)).selectOne(context);
+		return rv;
+	}
 
 	public void checkForDjError(String email, String first, String last, String pass1, String pass2) {
 		if (email.contentEquals("") || first.contentEquals("") || last.contentEquals("") || pass1.contentEquals("") || pass2.contentEquals("")) {
