@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -142,11 +143,15 @@ public class Manager {
     
     public void removeSong(Song song) {
         ObjectContext context = Manager.createContext();
-        Song tempSong = ObjectSelect.query(Song.class, Song.SONG_NAME.eq(song.getSongName())).selectOne(context);
-        if (tempSong != null) {
-            context.deleteObjects(tempSong);
+        try {
+            Song tempSong = SelectById.query(Song.class, Cayenne.longPKForObject(song)).selectOne(context);
+        	if (tempSong != null) {
+                context.deleteObjects(tempSong);
+            }
+            context.commitChanges();
+        } catch(CayenneRuntimeException e) {
+        	
         }
-        context.commitChanges();
     }
 
     /**

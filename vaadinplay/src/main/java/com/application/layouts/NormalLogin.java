@@ -46,12 +46,7 @@ public class NormalLogin extends VerticalLayout implements 	HasErrorParameter<No
 
         if (accessControl.isUserSignedIn()) {
         	try {
-        		CurrentUser.get();
-        		if (CurrentUser.get().getIsDj()) {
-                    event.rerouteTo(DJPanel.class);
-            	} else {
-            		event.rerouteTo(NormalPanel.class);
-            	}
+                event.rerouteTo(Panel.class);
         	} catch(IllegalArgumentException e) {
         		accessControl.signOut();
         	} catch (NullPointerException e) {

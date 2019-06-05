@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.application.Broadcaster;
+import com.application.authentication.CurrentUser;
 import com.application.beatseshDB.Party;
 import com.application.beatseshDB.Song;
 import com.application.beatseshDB.User;
@@ -96,7 +97,8 @@ public class SongView extends Div {
 		Button removeButton = new Button("", e -> {
 			Manager m = new Manager();
 			m.removeSong(song);
-			reloadSongs();
+			//reloadSongs();
+			Broadcaster.broadcast(Integer.toString(_partyCode));
 		});
 		removeButton.addClassName("remove");
 		removeButton.setIcon(new Icon(VaadinIcon.CLOSE));

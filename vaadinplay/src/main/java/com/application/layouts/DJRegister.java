@@ -43,11 +43,7 @@ public class DJRegister extends VerticalLayout implements BeforeEnterObserver {
 
 		if (accessControl.isUserSignedIn()) {
 			try {
-				if (CurrentUser.get().getIsDj()) {
-					event.rerouteTo(DJPanel.class);
-				} else {
-					event.rerouteTo(NormalPanel.class);
-				}
+				event.rerouteTo(Panel.class);
 			} catch(IllegalArgumentException e) {
 	    		accessControl.signOut();
 			}

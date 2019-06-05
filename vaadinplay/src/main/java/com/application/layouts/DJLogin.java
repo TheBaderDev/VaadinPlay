@@ -27,7 +27,6 @@ import com.vaadin.flow.router.Route;
 public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
     private static final long serialVersionUID = 4767522515196076677L;
     protected static Logger logger = Logger.getLogger(NormalLogin.class);
-    private int registerCounter = 0;
 
     public DJLogin() {
         logger.info("");
@@ -41,11 +40,7 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 
         if (accessControl.isUserSignedIn()) {
             try {
-                if (CurrentUser.get().getIsDj()) {
-                    event.rerouteTo(DJPanel.class);
-                } else {
-                    event.rerouteTo(NormalPanel.class);
-                }
+            	event.rerouteTo(Panel.class);
             } catch (IllegalArgumentException e) {
                 accessControl.signOut();
             }
@@ -62,7 +57,6 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 
     private void _loadView() {
         Div allDiv = new Div();
-        // allDiv.getStyle().set("background-image", "url(frontend/sayagata-400px.png");
 
         Div otherDiv = new Div();
         Button otherButton = new Button("Join a Party", e -> {
@@ -106,7 +100,7 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
                 accessControl.signInDj(user, partyName.getValue());
 
                 //Navigate
-                UI.getCurrent().navigate("djpanel");
+                UI.getCurrent().navigate(Panel.class);
 
                 Notification.show("Party Created Successfully");
             } catch (IllegalArgumentException e1) {
