@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.application.authentication.AccessControl;
 import com.application.authentication.AccessControlFactory;
-import com.application.authentication.CurrentUser;
 import com.application.beatseshDB.User;
 import com.application.database.Manager;
 import com.vaadin.flow.component.UI;
@@ -26,7 +25,7 @@ import com.vaadin.flow.router.Route;
 @HtmlImport("MainBoxLayoutStyle.html")
 public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
     private static final long serialVersionUID = 4767522515196076677L;
-    protected static Logger logger = Logger.getLogger(NormalLogin.class);
+    protected static Logger logger = Logger.getLogger(DJLogin.class);
 
     public DJLogin() {
         logger.info("");
@@ -40,7 +39,7 @@ public class DJLogin extends VerticalLayout implements BeforeEnterObserver {
 
         if (accessControl.isUserSignedIn()) {
             try {
-            	event.rerouteTo(Panel.class);
+                event.rerouteTo(Panel.class);
             } catch (IllegalArgumentException e) {
                 accessControl.signOut();
             }

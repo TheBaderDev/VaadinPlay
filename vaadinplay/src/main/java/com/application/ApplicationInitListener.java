@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.application.authentication.AccessControl;
 import com.application.authentication.AccessControlFactory;
-import com.application.layouts.NormalLogin;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
@@ -20,15 +19,15 @@ public class ApplicationInitListener implements VaadinServiceInitListener {
     public void serviceInit(ServiceInitEvent initEvent) {
         final AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
-        logger.info("");
+        logger.info("initEvent: '" + initEvent.getSource() + "'");
         initEvent.getSource().addUIInitListener(uiInitEvent -> {
             uiInitEvent.getUI().addBeforeEnterListener(enterEvent -> {
                 logger.info("");
 
-                //Not needed, rerouting is handled within the before listener of each view
-//                if (!accessControl.isUserSignedIn() && !NormalLogin.class.equals(enterEvent.getNavigationTarget())) {
-//                    enterEvent.rerouteTo(NormalLogin.class);
-//                }
+                // Not needed, rerouting is handled within the before listener of each view
+                //                if (!accessControl.isUserSignedIn() && !NormalLogin.class.equals(enterEvent.getNavigationTarget())) {
+                //                    enterEvent.rerouteTo(NormalLogin.class);
+                //                }
             });
         });
     }

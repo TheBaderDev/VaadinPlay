@@ -34,7 +34,7 @@ import com.vaadin.flow.shared.Registration;
 @Push
 public class Panel extends VerticalLayout implements BeforeEnterObserver, BeforeLeaveObserver, RouterLayout {
     private static final long serialVersionUID = 4767522515196076677L;
-    protected static Logger logger = Logger.getLogger(DJLogin.class);
+    protected static Logger logger = Logger.getLogger(Panel.class);
     Registration broadcasterRegistration;
 
     Div songView;
