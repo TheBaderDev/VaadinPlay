@@ -117,7 +117,7 @@ public class NormalLogin extends VerticalLayout implements HasErrorParameter<Not
 
     @Override
     public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
-        logger.info("");
+        logger.info("event.location: '" + event.getLocation().getPath() + "'");
 
         // UI.getCurrent().navigate(NormalLogin.class);
         // event.rerouteTo(NormalLogin.class);
