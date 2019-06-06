@@ -17,10 +17,8 @@ import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.BeforeLeaveEvent;
@@ -29,150 +27,152 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.shared.communication.PushMode;
 
 @Route("panel")
 @PageTitle("BeatSesh Panel")
 @HtmlImport("MainBoxLayoutStyle.html")
 @Push
-public class Panel extends VerticalLayout implements BeforeEnterObserver, BeforeLeaveObserver, RouterLayout{
-	private static final long serialVersionUID = 4767522515196076677L;
-	protected static Logger logger = Logger.getLogger(DJLogin.class);
-	Registration broadcasterRegistration;
-	private String partyCode;
-	
-	Div songView;
-	TextField songName = new TextField("Song Name");
-	TextField songArtist = new TextField("Song Artist");
-	TextField songLink = new TextField("Song Link");
- 
-	@Override
-	public void beforeEnter(BeforeEnterEvent event) {
-		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+public class Panel extends VerticalLayout implements BeforeEnterObserver, BeforeLeaveObserver, RouterLayout {
+    private static final long serialVersionUID = 4767522515196076677L;
+    protected static Logger logger = Logger.getLogger(DJLogin.class);
+    Registration broadcasterRegistration;
 
-		if (!accessControl.isUserSignedIn()) {
-			event.rerouteTo(DJLogin.class);
-		}
-	}
+    Div songView;
+    TextField songName = new TextField("Song Name");
+    TextField songArtist = new TextField("Song Artist");
+    TextField songLink = new TextField("Song Link");
 
-	@Override
-	public void beforeLeave(BeforeLeaveEvent event) {
-		try {
-			CurrentUser.get();
-			signout();
-		} catch (IllegalArgumentException e) {
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
-		}
-	}
+        if (!accessControl.isUserSignedIn()) {
+            event.rerouteTo(DJLogin.class);
+        }
+    }
 
-	public Panel() {
-		if (partyCode == null) {
-			try {
-				this.partyCode = Integer.toString(CurrentUser.get().getPartyID());
-			} catch(IllegalArgumentException e) {
-				
-			}
-		}
-		
-		logger.info("");
-		_loadBackGround();
-		_loadView();
-	}
+    @Override
+    public void beforeLeave(BeforeLeaveEvent event) {
+        try {
+            CurrentUser.get();
+            signout();
+        } catch (IllegalArgumentException e) {
 
-	private void _loadView() {
-		Div allDiv = new Div();
+        }
+    }
 
-		// party code
-		Label number = new Label("");
-		try {
-			number = new Label("Party Code: " + Integer.toString(CurrentUser.get().getPartyID()));
-			partyCode = Integer.toString(CurrentUser.get().getPartyID());
-		} catch (IllegalArgumentException e) {
+    public Panel() {
+        logger.info("");
+        _loadBackGround();
+        _loadView();
+    }
 
-		}
+    private String getPartyCode() {
+        String rv = "";
 
-		// Signout button
-		Button signOutButton = new Button("SignOut", e -> {
-			signout();
-		});
+        try {
+            rv = "" + CurrentUser.get().getPartyID();
+        } catch (IllegalArgumentException e) {
+            rv = "";
+        }
+        return rv;
+    }
 
-		// Song View
-		try {
-			songView = new SongView(CurrentUser.get().getPartyID(), CurrentUser.get().getIsDj());
-			songView.addClassName("ListBox");
+    private void _loadView() {
+        Div allDiv = new Div();
 
-		} catch (IllegalArgumentException e) {
-			// Notification.show(e.getMessage());
-		}
+        // party code
+        Label number = new Label("Party Code: " + getPartyCode());
 
-		// BroadcastView
-		Div broadCastDiv = new Div();
-		Button sendMessageButton = new Button("Recommend", e -> {
-			try {
-				Manager m = new Manager();
-				m.makeNewSong(Manager.getParty(CurrentUser.get().getPartyID()), songName.getValue(), songArtist.getValue(),
-						songLink.getValue());
-				
-				songName.setValue("");
-				songArtist.setValue("");
-				songLink.setValue("");
-				
-				Broadcaster.broadcast(Integer.toString(CurrentUser.get().getPartyID()));
-				
-			} catch (IllegalArgumentException er) {
-				Notification.show(er.getMessage());
-			}
-		});
-		broadCastDiv.add(songName, songArtist, songLink, sendMessageButton);
-		broadCastDiv.addClassName("recommend");
+        // Signout button
+        Button signOutButton = new Button("SignOut", e -> {
+            signout();
+        });
 
-		allDiv.addClassName("all");
-		allDiv.add(number, new Hr(), signOutButton, new Hr(), songView, new Hr(), broadCastDiv);
-		
-		//allDiv.getElement().getNode().markAsDirty();
-		add(allDiv);
-	}
+        // Song View
+        try {
+            songView = new SongView(CurrentUser.get().getPartyID(), CurrentUser.get().getIsDj());
+            songView.addClassName("ListBox");
 
-	private void signout() {
-		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
-		accessControl.signOut();
-	}
+        } catch (IllegalArgumentException e) {
+            // Notification.show(e.getMessage());
+        }
 
-	private void _loadBackGround() {
-		getStyle().set("background-image", "url(frontend/shattered-island.gif)");
-		setPadding(false);
-		setSpacing(false);
-		setSizeFull();
-		setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
-	}
+        // BroadcastView
+        Div broadCastDiv = new Div();
+        Button sendMessageButton = new Button("Recommend", e -> {
+            try {
+                Manager m = new Manager();
+                m.makeNewSong(Manager.getParty(CurrentUser.get().getPartyID()), songName.getValue(), songArtist.getValue(),
+                                songLink.getValue());
 
-	private void _reloadUI() {
-		songName.setValue("");
-		songArtist.setValue("");
-		songLink.setValue("");
-		
-		((SongView) songView).reloadSongs();
-	}
-	
-	@Override
-	protected void onAttach(AttachEvent attachEvent) {
-		// Start the data feed thread
-		UI ui = attachEvent.getUI();
+                songName.setValue("");
+                songArtist.setValue("");
+                songLink.setValue("");
 
-		broadcasterRegistration = Broadcaster.register(newMessage -> {
-			if (partyCode != null && partyCode.equals(newMessage)) {
-				ui.access(() -> {
-					//songView.getElement().getNode().markAsDirty();
-					_reloadUI();
-					//ui.push();
-				});
-			}
-		});
-	}
+                Broadcaster.broadcast(Integer.toString(CurrentUser.get().getPartyID()));
 
-	@Override
-	protected void onDetach(DetachEvent detachEvent) {
-		broadcasterRegistration.remove();
-		broadcasterRegistration = null;
-	}
+            } catch (IllegalArgumentException er) {
+                Notification.show(er.getMessage());
+            }
+        });
+        broadCastDiv.add(songName, songArtist, songLink, sendMessageButton);
+        broadCastDiv.addClassName("recommend");
+
+        allDiv.addClassName("all");
+        allDiv.add(number, new Hr(), signOutButton, new Hr(), songView, new Hr(), broadCastDiv);
+
+        //allDiv.getElement().getNode().markAsDirty();
+        add(allDiv);
+    }
+
+    private void signout() {
+        AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+        accessControl.signOut();
+    }
+
+    private void _loadBackGround() {
+        getStyle().set("background-image", "url(frontend/shattered-island.gif)");
+        setPadding(false);
+        setSpacing(false);
+        setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.STRETCH);
+    }
+
+    private void _reloadUI() {
+        songName.setValue("");
+        songArtist.setValue("");
+        songLink.setValue("");
+
+        ((SongView) songView).reloadSongs();
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        String partyCode = getPartyCode();
+
+        // Start the data feed thread
+        UI ui = attachEvent.getUI();
+
+        logger.info("partyCode: '" + partyCode + "'");
+        broadcasterRegistration = Broadcaster.register(newMessage -> {
+            if (partyCode != null && partyCode.equals(newMessage)) {
+                logger.info("partyCode: '" + partyCode + "'");
+
+                ui.access(() -> {
+                    //songView.getElement().getNode().markAsDirty();
+                    _reloadUI();
+                    //ui.push();
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        logger.info("partyCode: '" + getPartyCode() + "'");
+
+        broadcasterRegistration.remove();
+        broadcasterRegistration = null;
+    }
 }

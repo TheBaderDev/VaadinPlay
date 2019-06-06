@@ -74,14 +74,14 @@ public class Manager {
         rv.addToUsers(tempDJ);
         context.commitChanges();
         CurrentUser.set(tempDJ);
-        
-//    	//Delete Later
-//    	Manager m = new Manager();
-//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Bohemian Rhapsody", "Queen", "www.google.com");
-//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "We Will Rock You", "Queen", "www.google.com");
-//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Don't Stop Me Now", "Queen", "www.google.com");
-//    	m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Another One Bites the Dust", "Queen", "www.google.com");    	
- 
+
+        //Delete Later
+        Manager m = new Manager();
+        m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Bohemian Rhapsody", "Queen", "www.google.com");
+        m.makeNewSong(Manager.getParty(rv.getPartyCode()), "We Will Rock You", "Queen", "www.google.com");
+        m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Don't Stop Me Now", "Queen", "www.google.com");
+        m.makeNewSong(Manager.getParty(rv.getPartyCode()), "Another One Bites the Dust", "Queen", "www.google.com");
+
         return rv;
     }
 
@@ -114,19 +114,19 @@ public class Manager {
      * @return
      */
     public Song makeNewSong(Party party, String songName, String songArtist, String link) throws IllegalArgumentException {
-    	if (songName.contentEquals("") || songArtist.equals("") || link.contentEquals("")) {
-    		throw new IllegalArgumentException("Invalid Song");
-    	}
-    	
-    	for (int i = 0; i < party.getSongs().size(); i++) {
-    		if (party.getSongs().get(i).getSongName().equalsIgnoreCase(songName)) {
-    			throw new IllegalArgumentException("Song Already Exists");
-    		}
-    	}
-    	
+        if (songName.contentEquals("") || songArtist.equals("") || link.contentEquals("")) {
+            throw new IllegalArgumentException("Invalid Song");
+        }
+
+        for (int i = 0; i < party.getSongs().size(); i++) {
+            if (party.getSongs().get(i).getSongName().equalsIgnoreCase(songName)) {
+                throw new IllegalArgumentException("Song Already Exists");
+            }
+        }
+
         ObjectContext context = Manager.createContext();
         Song rv = context.newObject(Song.class);
-        
+
         rv.setSongName(songName);
         rv.setSongArtist(songArtist);
         rv.setLink(link);
@@ -140,17 +140,17 @@ public class Manager {
         context.commitChanges();
         return rv;
     }
-    
+
     public void removeSong(Song song) {
         ObjectContext context = Manager.createContext();
         try {
             Song tempSong = SelectById.query(Song.class, Cayenne.longPKForObject(song)).selectOne(context);
-        	if (tempSong != null) {
+            if (tempSong != null) {
                 context.deleteObjects(tempSong);
             }
             context.commitChanges();
-        } catch(CayenneRuntimeException e) {
-        	
+        } catch (CayenneRuntimeException e) {
+
         }
     }
 
@@ -208,38 +208,38 @@ public class Manager {
         return rv;
     }
 
-	public static User getUserFromDB(long l) {
-		ObjectContext context = Manager.createContext();
-		User rv = SelectById.query(User.class, l).selectOne(context);
-		return rv;
-	}
-	
-	public static User getUserFromDB(String email, String password) {
-		ObjectContext context = Manager.createContext();
-		User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
-		if (rv == null || !rv.getPassword().equalsIgnoreCase(password)) {
-			throw new IllegalArgumentException("Bad Password or Email");
-		} else {
-			return rv;
-		}
-	}
-	
-	public static Party getParty(int code) {
-		ObjectContext context = Manager.createContext();
-		Party rv = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(code)).selectOne(context);
-		return rv;
-	}
+    public static User getUserFromDB(long l) {
+        ObjectContext context = Manager.createContext();
+        User rv = SelectById.query(User.class, l).selectOne(context);
+        return rv;
+    }
 
-	public void checkForDjError(String email, String first, String last, String pass1, String pass2) {
-		if (email.contentEquals("") || first.contentEquals("") || last.contentEquals("") || pass1.contentEquals("") || pass2.contentEquals("")) {
-			throw new IllegalArgumentException("Can't Leave Any Field Blank");
-		} else if (!pass1.contentEquals(pass2)) {
-			throw new IllegalArgumentException("Passwords are not the same " + pass1 + " vs " + pass2);
-		}
-		ObjectContext context = Manager.createContext();
-		User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
-		if (rv != null) {
-			throw new IllegalArgumentException("Email Address Already Taken");
-		}
-	}
+    public static User getUserFromDB(String email, String password) {
+        ObjectContext context = Manager.createContext();
+        User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
+        if (rv == null || !rv.getPassword().equalsIgnoreCase(password)) {
+            throw new IllegalArgumentException("Bad Password or Email");
+        } else {
+            return rv;
+        }
+    }
+
+    public static Party getParty(int code) {
+        ObjectContext context = Manager.createContext();
+        Party rv = ObjectSelect.query(Party.class, Party.PARTY_CODE.eq(code)).selectOne(context);
+        return rv;
+    }
+
+    public void checkForDjError(String email, String first, String last, String pass1, String pass2) {
+        if (email.contentEquals("") || first.contentEquals("") || last.contentEquals("") || pass1.contentEquals("") || pass2.contentEquals("")) {
+            throw new IllegalArgumentException("Can't Leave Any Field Blank");
+        } else if (!pass1.contentEquals(pass2)) {
+            throw new IllegalArgumentException("Passwords are not the same " + pass1 + " vs " + pass2);
+        }
+        ObjectContext context = Manager.createContext();
+        User rv = ObjectSelect.query(User.class, User.EMAIL_ADDRESS.eq(email)).selectOne(context);
+        if (rv != null) {
+            throw new IllegalArgumentException("Email Address Already Taken");
+        }
+    }
 }
