@@ -1,7 +1,5 @@
 package com.application.layouts;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 
 import com.application.authentication.AccessControl;
@@ -19,16 +17,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.ErrorParameter;
-import com.vaadin.flow.router.HasErrorParameter;
-import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("login")
 @PageTitle("BeatSesh Login")
 @HtmlImport("MainBoxLayoutStyle.html")
-public class NormalLogin extends VerticalLayout implements HasErrorParameter<NotFoundException>, BeforeEnterObserver {
+public class NormalLogin extends VerticalLayout implements BeforeEnterObserver {
     private static final long serialVersionUID = 4767522515196076677L;
     protected static Logger logger = Logger.getLogger(NormalLogin.class);
 
@@ -115,12 +110,12 @@ public class NormalLogin extends VerticalLayout implements HasErrorParameter<Not
         add(allDiv);
     }
 
-    @Override
-    public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
-        logger.info("event.location: '" + event.getLocation().getPath() + "'");
-
-        // UI.getCurrent().navigate(NormalLogin.class);
-        // event.rerouteTo(NormalLogin.class);
-        return HttpServletResponse.SC_NOT_FOUND;
-    }
+    //    @Override
+    //    public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
+    //        logger.info("event.location: '" + event.getLocation().getPath() + "'");
+    //
+    //        // UI.getCurrent().navigate(NormalLogin.class);
+    //        // event.rerouteTo(NormalLogin.class);
+    //        return HttpServletResponse.SC_NOT_FOUND;
+    //    }
 }

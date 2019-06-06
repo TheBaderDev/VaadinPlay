@@ -28,7 +28,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.shared.Registration;
 
-@Route("panel")
+@Route("")
 @PageTitle("BeatSesh Panel")
 @HtmlImport("MainBoxLayoutStyle.html")
 @Push
@@ -120,7 +120,11 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
         broadCastDiv.addClassName("recommend");
 
         allDiv.addClassName("all");
-        allDiv.add(number, new Hr(), signOutButton, new Hr(), songView, new Hr(), broadCastDiv);
+        if (songView != null) {
+            allDiv.add(number, new Hr(), signOutButton, new Hr(), songView, new Hr(), broadCastDiv);
+        } else {
+            allDiv.add(number, new Hr(), signOutButton, new Hr(), broadCastDiv);
+        }
 
         //allDiv.getElement().getNode().markAsDirty();
         add(allDiv);
