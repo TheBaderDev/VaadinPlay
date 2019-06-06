@@ -2,8 +2,6 @@ package com.application.layouts;
 
 import org.apache.log4j.Logger;
 
-import com.application.authentication.AccessControl;
-import com.application.authentication.AccessControlFactory;
 import com.application.beatseshDB.User;
 import com.application.database.Manager;
 import com.vaadin.flow.component.UI;
@@ -15,15 +13,12 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 
-@Route("djregister")
+//@Route("djregister")
 @PageTitle("DJ Registration")
 @HtmlImport("MainBoxLayoutStyle.html")
-public class DJRegister extends VerticalLayout implements BeforeEnterObserver {
+public class DJRegister extends VerticalLayout {
     private static final long serialVersionUID = 4767522515196076677L;
     protected static Logger logger = Logger.getLogger(DJRegister.class);
     private int registerCounter = 0;
@@ -32,19 +27,6 @@ public class DJRegister extends VerticalLayout implements BeforeEnterObserver {
         logger.info("");
         _loadBackGround();
         _loadView();
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
-
-        if (accessControl.isUserSignedIn()) {
-            try {
-                event.rerouteTo(Panel.class);
-            } catch (IllegalArgumentException e) {
-                accessControl.signOut();
-            }
-        }
     }
 
     private void _loadBackGround() {

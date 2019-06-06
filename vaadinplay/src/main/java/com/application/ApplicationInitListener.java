@@ -2,8 +2,6 @@ package com.application;
 
 import org.apache.log4j.Logger;
 
-import com.application.authentication.AccessControl;
-import com.application.authentication.AccessControlFactory;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
@@ -13,22 +11,26 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
  * in META-INF/services.
  */
 public class ApplicationInitListener implements VaadinServiceInitListener {
+    private static final long serialVersionUID = -5153701302647654880L;
     protected static Logger logger = Logger.getLogger(ApplicationInitListener.class);
 
     @Override
     public void serviceInit(ServiceInitEvent initEvent) {
-        final AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
+        //        final AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
 
         logger.info("initEvent: '" + initEvent.getSource() + "'");
-        initEvent.getSource().addUIInitListener(uiInitEvent -> {
-            uiInitEvent.getUI().addBeforeEnterListener(enterEvent -> {
-                logger.info("");
-
-                // Not needed, rerouting is handled within the before listener of each view
-                //                if (!accessControl.isUserSignedIn() && !NormalLogin.class.equals(enterEvent.getNavigationTarget())) {
-                //                    enterEvent.rerouteTo(NormalLogin.class);
-                //                }
-            });
-        });
+        //        initEvent.getSource().addUIInitListener(uiInitEvent -> {
+        //            uiInitEvent.getUI().addBeforeEnterListener(enterEvent -> {
+        //                if (!accessControl.isUserSignedIn()) {
+        //                    logger.info("target: '" + enterEvent.getNavigationTarget() + "'");
+        //
+        //                    if (NormalLogin.class.equals(enterEvent.getNavigationTarget())) {
+        //                        enterEvent.rerouteTo(NormalLogin.class);
+        //                    } else if (DJLogin.class.equals(enterEvent.getNavigationTarget())) {
+        //                        enterEvent.rerouteTo(DJLogin.class);
+        //                    }
+        //                }
+        //            });
+        //        });
     }
 }

@@ -96,7 +96,7 @@ public class NormalLogin extends VerticalLayout implements HasErrorParameter<Not
                 accessControl.signInNormal(currentUser);
 
                 //Navigate
-                UI.getCurrent().navigate("panel");
+                UI.getCurrent().navigate(Panel.class);
 
                 nameField.setValue("");
                 codeField.setValue("");
