@@ -17,31 +17,35 @@ import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.BeforeLeaveEvent;
 import com.vaadin.flow.router.BeforeLeaveObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.shared.Registration;
+import com.vaadin.flow.shared.communication.PushMode;
 
 @Route("panel")
 @PageTitle("BeatSesh Panel")
 @HtmlImport("MainBoxLayoutStyle.html")
 @Push
-public class Panel extends VerticalLayout implements BeforeEnterObserver, BeforeLeaveObserver {
+public class Panel extends VerticalLayout implements BeforeEnterObserver, BeforeLeaveObserver, RouterLayout{
 	private static final long serialVersionUID = 4767522515196076677L;
 	protected static Logger logger = Logger.getLogger(DJLogin.class);
 	Registration broadcasterRegistration;
-
-	String partyCode;
+	private String partyCode;
+	
 	Div songView;
 	TextField songName = new TextField("Song Name");
 	TextField songArtist = new TextField("Song Artist");
 	TextField songLink = new TextField("Song Link");
-
+ 
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
 		AccessControl accessControl = AccessControlFactory.getInstance().getAccessControl();
@@ -62,6 +66,14 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
 	}
 
 	public Panel() {
+		if (partyCode == null) {
+			try {
+				this.partyCode = Integer.toString(CurrentUser.get().getPartyID());
+			} catch(IllegalArgumentException e) {
+				
+			}
+		}
+		
 		logger.info("");
 		_loadBackGround();
 		_loadView();
@@ -86,9 +98,9 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
 
 		// Song View
 		try {
-			songView = new SongView(CurrentUser.get().getPartyID(), true);
+			songView = new SongView(CurrentUser.get().getPartyID(), CurrentUser.get().getIsDj());
 			songView.addClassName("ListBox");
-			_reloadUI();
+
 		} catch (IllegalArgumentException e) {
 			// Notification.show(e.getMessage());
 		}
@@ -98,10 +110,15 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
 		Button sendMessageButton = new Button("Recommend", e -> {
 			try {
 				Manager m = new Manager();
-				m.makeNewSong(m.getParty(CurrentUser.get().getPartyID()), songName.getValue(), songArtist.getValue(),
+				m.makeNewSong(Manager.getParty(CurrentUser.get().getPartyID()), songName.getValue(), songArtist.getValue(),
 						songLink.getValue());
-
+				
+				songName.setValue("");
+				songArtist.setValue("");
+				songLink.setValue("");
+				
 				Broadcaster.broadcast(Integer.toString(CurrentUser.get().getPartyID()));
+				
 			} catch (IllegalArgumentException er) {
 				Notification.show(er.getMessage());
 			}
@@ -111,6 +128,8 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
 
 		allDiv.addClassName("all");
 		allDiv.add(number, new Hr(), signOutButton, new Hr(), songView, new Hr(), broadCastDiv);
+		
+		//allDiv.getElement().getNode().markAsDirty();
 		add(allDiv);
 	}
 
@@ -131,22 +150,23 @@ public class Panel extends VerticalLayout implements BeforeEnterObserver, Before
 		songName.setValue("");
 		songArtist.setValue("");
 		songLink.setValue("");
-
+		
 		((SongView) songView).reloadSongs();
 	}
-
+	
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
+		// Start the data feed thread
 		UI ui = attachEvent.getUI();
 
 		broadcasterRegistration = Broadcaster.register(newMessage -> {
-
-			if (Integer.toString(CurrentUser.get().getPartyID()).equals(newMessage)) {
+			if (partyCode != null && partyCode.equals(newMessage)) {
 				ui.access(() -> {
+					//songView.getElement().getNode().markAsDirty();
 					_reloadUI();
+					//ui.push();
 				});
 			}
-
 		});
 	}
 

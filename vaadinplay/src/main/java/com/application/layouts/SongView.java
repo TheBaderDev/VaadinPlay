@@ -26,6 +26,7 @@ import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.shared.Registration;
 
 /*
@@ -40,8 +41,7 @@ public class SongView extends Div {
     public SongView(int code, boolean bool) {
     	this.setPartyCode(code);
     	this.setIsDJ(bool);
-    	
-    	//reloadSongs();
+    	reloadSongs();
     }
 
     public void setPartyCode(int aValue) {
@@ -87,10 +87,12 @@ public class SongView extends Div {
 	private void addUiSong(Song song) {
 		Div songDiv = new Div();
 		Label tempNameLabel = new Label(song.getSongName() + " by " + song.getSongArtist());
-		Button upButton = new Button("UP", e -> {
+		tempNameLabel.addClassName("songlabel");
+
+		Button upButton = new Button("", e -> {
 			
 		});
-		Button downButton = new Button("DOWN", e -> {
+		Button downButton = new Button("", e -> {
 			
 		});
 		
@@ -100,13 +102,19 @@ public class SongView extends Div {
 			//reloadSongs();
 			Broadcaster.broadcast(Integer.toString(_partyCode));
 		});
+		upButton.addClassName("remove");
+		upButton.setIcon(new Icon(VaadinIcon.ARROW_UP));
+		downButton.addClassName("remove");
+		downButton.setIcon(new Icon(VaadinIcon.ARROW_DOWN));
 		removeButton.addClassName("remove");
 		removeButton.setIcon(new Icon(VaadinIcon.CLOSE));
 		
-		songDiv.add(tempNameLabel, removeButton);
-		songDiv.addClassName("songDiv");
-		tempNameLabel.addClassName("label");
-		
+		songDiv.add(tempNameLabel);
+		if (_isDJ == true) {
+			songDiv.add(removeButton, downButton, upButton);
+		}
+
+		songDiv.addClassName("songDiv");		
 		add(songDiv);
 	}
 }
